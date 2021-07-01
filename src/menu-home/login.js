@@ -7,11 +7,13 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useLocalStorage } from '../requests/greenHooks.js'
 import { Messages } from 'primereact/messages'
+import  {api_address }  from '../proxy/proxy.js'
 
 export default function Login(props){
 
     const [login,setLogin] = useState("")
     const [senha,setSenha] = useState("")
+    const [token,setToken] = useLocalStorage("token",null)
     const [,setLoggedin] = useLocalStorage("loggedin",null)
     const [,setClienteId] = useLocalStorage("clienteId",null)
     const [,setClienteNome] = useLocalStorage("clienteNome",null)
@@ -24,43 +26,35 @@ export default function Login(props){
       document.title = "Greenish B2B | Login"
     }, [])
 
-    const handleSubmit = () =>{
-        axios.get('accounts/login/')
-      
-        var csrftoken = Cookies.get('csrftoken')
-        let data = new FormData()
-        data.append("username",login)
-        data.append("password",senha)
-        data.append("csrfmiddlewaretoken", csrftoken) 
-        var config = {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          }
-        }
-    
-        axios.post('login/',data,config,{ withCredentials: true })
-        .then(function (response){
-            if(response.data['confirmed']){
-              Cookies.set("sessionid",response.data['sessionid'])
-              setLoggedin(true)
-              setClienteId(response.data['clienteId'])
-              setClienteNome(response.data['clienteNome'])
-              setIsRep(response.data['isRep'])
-              setUsername(response.data['username'])
-              setCarrinhoId(null)
-              window.location.href = '/'
-            }else{
-              message.current.show([
-                { severity: 'error', summary: response.data['message'], sticky: false }
-            ])
-            setLogin("")
-            setSenha("")
-            }
 
+    const handleSubmit = () =>{
+
+      let data = new FormData()
+      data.append("username",login)
+      data.append("password",senha)
+  
+      axios.post(api_address+'/api-token-auth/',data)
+      .then(function (response){
+        let config = {headers:{'Authorization': 'Token '+response.data['token']}}
+        setToken(response.data['token'])
+        axios.get(api_address+'/login',config)
+        .then(function (response){
+          setLoggedin(true)
+          setClienteId(response.data['clienteId'])
+          setClienteNome(response.data['clienteNome'])
+          setIsRep(response.data['isRep'])
+          setUsername(response.data['username'])
+          setCarrinhoId(null)
+          window.location.href = '/'
         })
-    
-      }
+      }).catch(function (err){
+        message.current.show([
+          { severity: 'error', summary: "Usuario ou senha Incorretos", sticky: false }
+        ])
+        setLogin("")
+        setSenha("")
+      })
+    }
 
     return(
       <div>

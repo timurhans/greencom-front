@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import axios from 'axios'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea';
+import  {api_address }  from '../proxy/proxy.js'
 
 
 export default function Carrinho() {
@@ -17,6 +18,7 @@ export default function Carrinho() {
   const [clienteId,setClienteId ] = useLocalStorage("clienteId",null)
   const [clienteNome,setClienteNome ] = useLocalStorage("clienteNome",null)
   const [carrinhoId,setCarrinhoId ] = useLocalStorage("carrinhoId",null)
+  const [token,setToken] = useLocalStorage("token",null)
   const [isRep,setIsRep ] = useLocalStorage("isRep",null)
   const [displayModal, setDisplayModal] = useState(false)
 
@@ -56,7 +58,8 @@ export default function Carrinho() {
   const handleSave = () => {
     axios({
         method: 'GET',
-        url: '/pedidos/salva/'+carrinhoId+'/',
+        url: api_address+'/pedidos/salva/'+carrinhoId+'/',
+        headers: {'Authorization': 'Token '+token},
         params:{
           observacoes:observacoesNovo
         }

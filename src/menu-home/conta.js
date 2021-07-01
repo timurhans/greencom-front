@@ -5,19 +5,26 @@ import {Password} from 'primereact/password';
 import 'primeflex/primeflex.css';
 import { Dialog } from 'primereact/dialog'
 import { Messages } from 'primereact/messages'
-import Cookies from 'js-cookie'
+import { useLocalStorage } from '../requests/greenHooks.js'
+import  {api_address }  from '../proxy/proxy.js'
 
 export default function Conta(props){
   const [senhaAtual,setSenhaAtual ] = useState("")
   const [senhaNova1,setSenhaNova1 ] = useState("")
   const [senhaNova2,setSenhaNova2 ] = useState("")
+  const [token,setToken] = useLocalStorage("token",null)
   const [displayModalSenha, setDisplayModalSenha] = useState(false)
   const message = useRef(null)
-    useEffect(() => {
+    
+  useEffect(() => {
       document.title = "Greenish B2B | Conta"
     }, [])
+
     const handleLogout = () =>{
-        axios.get('/accounts/logout',{ withCredentials: true })
+        var config = {
+          headers: {'Authorization': 'Token '+token}
+        }
+        axios.get(api_address+'/accounts/logout',config)
         .then(function (response){
             localStorage.clear()
             window.location.href = '/'
@@ -26,18 +33,14 @@ export default function Conta(props){
 
     const changePassword = () =>{
         if (senhaNova1 === senhaNova2){
-          var csrftoken = Cookies.get('csrftoken')
           var data = {
             "senhaNova":senhaNova1,
             "senhaAtual":senhaAtual,
           }
           var config = {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken" : csrftoken
-            }
+            headers: {'Authorization': 'Token '+token}
           }
-          axios.post('/change_password/',data,config,{ withCredentials: true })
+          axios.post(api_address+'/change_password/',data,config)
           .then(function (response){
               if (response.data['confirmed']){
                 localStorage.clear()

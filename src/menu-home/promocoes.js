@@ -3,12 +3,15 @@ import axios from 'axios'
 import { Button } from 'primereact/button';
 import { useLocalStorage } from '../requests/greenHooks.js'
 import { useState,useEffect } from 'react'
+import  {api_address }  from '../proxy/proxy.js'
+
 
 
 export default function Promocoes(props) {
 
     const [promocoes,setPromocoes] = useState([])
     const [carrinhoId,setCarrinhoId ] = useLocalStorage("carrinhoId",null)
+    const [token,setToken] = useLocalStorage("token",null)
 
   
     useEffect(() => {
@@ -17,10 +20,11 @@ export default function Promocoes(props) {
       }, [])
 
     const computaPromo = (id_promocao,id_condicao) =>{
-        let url = 'http://localhost:3000/promocoes/'+carrinhoId
+        let url = api_address+'/promocoes/'+carrinhoId
         axios({
             method: 'GET',
             url: url,
+            headers:{'Authorization': 'Token '+token},
             params:{
                 id_promocao:id_promocao,
                 id_condicao:id_condicao
@@ -32,10 +36,11 @@ export default function Promocoes(props) {
     }
 
     const removePromo = () =>{
-        let url = 'http://localhost:3000/promocoes/remove/'+carrinhoId
+        let url = api_address+'/promocoes/remove/'+carrinhoId
         axios({
             method: 'GET',
-            url: url,
+            headers:{'Authorization': 'Token '+token},
+            url: url, 
         }).then(res => {
             console.log(res.data['message'])
         })
@@ -43,9 +48,10 @@ export default function Promocoes(props) {
     }
 
     const getPromocoes = () =>{
-        let url = 'http://localhost:3000/promocoes'
+        let url = api_address+'/promocoes'
         axios({
             method: 'GET',
+            headers:{'Authorization': 'Token '+token},
             url: url,
         }).then(res => {
             setPromocoes(res.data['promocoes'])

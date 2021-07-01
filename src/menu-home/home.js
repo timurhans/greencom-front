@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios'
+import  {api_address }  from '../proxy/proxy.js'
 
 
 export class Home extends React.Component {
@@ -17,12 +18,12 @@ export class Home extends React.Component {
     }  
     updateBanners() {
 
-        let url = 'http://localhost:3000/home'
+        let url = api_address+'/home'
         axios({
             method: 'GET',
             url: url,
         }).then(res => {
-            this.setState({banners: res.data})
+            this.setState({banners: res.data['banners']})
             console.log(this.state.banners)
         })
     }

@@ -8,7 +8,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import axios from 'axios'
-// import { BsFillGrid3X2GapFill } from 'react-icons/bs'
+import  {api_address }  from '../proxy/proxy.js'
 
 
 export default function Produtos() {
@@ -17,6 +17,7 @@ export default function Produtos() {
   const [first, setFirst] = useState(0)
   const [rows, setRows] = useState(12)
   const [qtd, setQtd] = useState(0)
+  const [token,setToken] = useLocalStorage("token",null)
   const [colecao, setColecao] = useLocalStorage("colecao",null)
   const [periodo, setPeriodo] = useLocalStorage("periodo",null)
   const [clienteId, ] = useLocalStorage("clienteId",null)
@@ -28,9 +29,10 @@ export default function Produtos() {
 
   const updateFilterOptions = () =>{
       
-    let url = 'http://localhost:3000/filterOptions'
+    let url = api_address+'/filterOptions'
     axios({
       method: 'GET',
+      headers:{'Authorization': 'Token '+token},
       url: url,
     }).then(res => {
       console.log(res.data)

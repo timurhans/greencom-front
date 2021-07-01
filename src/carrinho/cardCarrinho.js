@@ -10,9 +10,11 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { confirmDialog } from 'primereact/confirmdialog'
 import 'primeflex/primeflex.css';
+import  {api_address }  from '../proxy/proxy.js'
 
 export default function CardCarrinho(props) {
     const [displayModal, setDisplayModal] = useState(false)
+    const [token,setToken] = useLocalStorage("token",null)
 
 
     const onClick = () => {
@@ -34,7 +36,8 @@ export default function CardCarrinho(props) {
     const handleDelete = () => {
         axios({
             method: 'GET',
-            url: '/carrinho/delete_item/'+props.produto.id,
+            url: api_address+'/carrinho/delete_item/'+props.produto.id,
+            headers: {'Authorization': 'Token '+token}
           }).then(res => {
             props.forceUpdate()
           })
@@ -91,6 +94,7 @@ function TableProds(props) {
     const [linhasDados, setLinhasDados] = useState(<div></div>)
     const [clienteId, ] = useLocalStorage("clienteId",null)
     const [carrinhoId, ] = useLocalStorage("carrinhoId",null)
+    const [token,setToken] = useLocalStorage("token",null)
     
     const {
         dadosPeriodo,
@@ -168,13 +172,11 @@ function TableProds(props) {
     }
 
     const handleSubmit = () => {
-        var csrftoken = Cookies.get('csrftoken')
         let qtd_total = 0
         for (var index in pedido){
             let qtds_cor = pedido[index]
             qtd_total = qtd_total + qtds_cor.reduce((a,b) => a+b,0)
         }
-        console.log(produto)
         var data = {
             "produto":produto,
             "periodo":periodo,
@@ -184,13 +186,10 @@ function TableProds(props) {
             "carrinhoId":carrinhoId,
         }
         var config = {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          }
+            headers: {'Authorization': 'Token '+token}
         }
     
-        axios.post('/carrinho/update/'+produto.id,data,config,{ withCredentials: true })
+        axios.post(api_address+'/carrinho/update/'+produto.id,data,config,)
         .then(function (response){
             if (response.data['confirmed']){
                 message.current.show([

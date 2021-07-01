@@ -4,11 +4,13 @@ import { Button } from 'primereact/button';
 import { useLocalStorage } from '../requests/greenHooks.js'
 import { useState,useEffect } from 'react'
 import { confirmDialog } from 'primereact/confirmdialog'
+import  {api_address }  from '../proxy/proxy.js'
 
 
 export default function Clientes(props) {
 
     const [clientes,setClientes] = useState([])
+    const [token,setToken] = useLocalStorage("token",null)
     const [, setClienteId] = useLocalStorage("clienteId",null)
     const [, setClienteNome] = useLocalStorage("clienteNome",null)
     const [carrinhoId, setCarrinhoId] = useLocalStorage("carrinhoId",null)
@@ -32,7 +34,8 @@ export default function Clientes(props) {
     const altera_cliente = (id,nome) =>{
         axios({
             method: 'GET',
-            url: '/pedidos/deleta/'+carrinhoId,
+            headers: {'Authorization': 'Token '+token},
+            url: api_address+'/pedidos/deleta/'+carrinhoId,
           })
         setClienteId(id)
         setClienteNome(nome)
@@ -42,9 +45,10 @@ export default function Clientes(props) {
     
 
     const getClientes = () =>{
-        let url = 'http://localhost:3000/clientes'
+        let url = api_address+'/clientes'
         axios({
             method: 'GET',
+            headers: {'Authorization': 'Token '+token},
             url: url,
         }).then(res => {
             setClientes(res.data['clientes'])

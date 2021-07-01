@@ -9,6 +9,7 @@ import  usePeriodos, {useLocalStorage } from '../requests/greenHooks.js'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import 'primeflex/primeflex.css';
+import  {api_address }  from '../proxy/proxy.js'
 
 
 
@@ -57,6 +58,7 @@ function TableProds(props) {
     const [periodo, setPeriodo] = useState('')
     const [pedido, setPedido] = useState({})
     const [linhasDados, setLinhasDados] = useState(<div></div>)
+    const [token,setToken] = useLocalStorage("token",null)
     const [clienteId, ] = useLocalStorage("clienteId",null)
     const [carrinhoId,setCarrinhoId ] = useLocalStorage("carrinhoId",null)
     const message = useRef(null)
@@ -91,7 +93,6 @@ function TableProds(props) {
     }
 
     const handleSubmit = () => {
-        var csrftoken = Cookies.get('csrftoken')
         let qtd_total = 0
         for (var index in pedido){
             let qtds_cor = pedido[index]
@@ -106,16 +107,13 @@ function TableProds(props) {
             "carrinhoId":carrinhoId,
         }
         var config = {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          }
+            headers:{'Authorization': 'Token '+token}
         }
     
         console.log(data)
         console.log(config['headers'])
     
-        axios.post('/carrinho/',data,config,{ withCredentials: true })
+        axios.post(api_address+'/carrinho/',data,config)
         .then(function (response){
             if (response.data['confirmed']){
                 message.current.show([

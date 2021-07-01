@@ -7,6 +7,7 @@ import { ProgressSpinner } from 'primereact/progressspinner'
 import { Dialog } from 'primereact/dialog'
 import { Messages } from 'primereact/messages'
 import { confirmDialog } from 'primereact/confirmdialog'
+import  {api_address }  from '../proxy/proxy.js'
 
 
 export default function Pedidos(props) {
@@ -15,6 +16,7 @@ export default function Pedidos(props) {
     const [carrinhoAtualId, setCarrinhoId] = useLocalStorage("carrinhoId",null)
     const [, setClienteId] = useLocalStorage("clienteId",null)
     const [, setClienteNome] = useLocalStorage("clienteNome",null)
+    const [token,setToken] = useLocalStorage("token",null)
     const [displayModal, setDisplayModal] = useState(false)
     const message = useRef(null)
   
@@ -38,10 +40,11 @@ export default function Pedidos(props) {
     const alterar_pedido = (carrrinhoId,id,nome) =>{
         axios({
             method: 'GET',
-            url: '/pedidos/retoma/'+carrrinhoId,
+            url: api_address+'/pedidos/retoma/'+carrrinhoId,
+            headers: {'Authorization': 'Token '+token},
             params:{
                 carrinhoAtualId:carrinhoAtualId
-              }
+              },
           }).then(res => {
             if(res.data['confirmed']){
                 setCarrinhoId(carrrinhoId)
@@ -58,9 +61,11 @@ export default function Pedidos(props) {
 
     const processar = (pedidoId) =>{
         setDisplayModal(true)
+
         axios({
             method: 'GET',
-            url: '/pedidos/processa/'+pedidoId,
+            url: api_address+'/pedidos/processa/'+pedidoId,
+            headers: {'Authorization': 'Token '+token}
           }).then(res => {
             setDisplayModal(false)
             if(res.data['confirmed']){
@@ -74,11 +79,13 @@ export default function Pedidos(props) {
           })
     }
     const getPedidos = () =>{
-        let url = 'http://localhost:3000/pedidos'
+        let url = api_address+'/pedidos'
         axios({
             method: 'GET',
             url: url,
+            headers: {'Authorization': 'Token '+token}
         }).then(res => {
+            console.log(res.data)
             setPedidos(res.data['pedidos'])
         })
     }

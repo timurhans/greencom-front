@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import axios from 'axios'
 import { useLocalStorage } from '../requests/greenHooks.js'
-import { Dialog } from 'primereact/dialog';
+import  {api_address }  from '../proxy/proxy.js'
 
 //Menu com dropdown para pedidos,clientes e etc
 const MenuPerfil = () => {
@@ -58,15 +58,10 @@ export class MyMenu extends React.Component {
     componentDidMount() {
       this.updateCats();
     }
-    // componentDidUpdate() {
-    //     this.setState({displayModal: getDisplayModal()})
-    // }
 
     handleSearch = (e) =>{
         if (this.state.query !== ''){
             e.preventDefault()
-            // let base_url = window.location.href
-            // base_url = base_url.split('?')[0] 
             window.location = '/busca?query='+this.state.query
             this.setState({query: ''})
         }
@@ -77,8 +72,6 @@ export class MyMenu extends React.Component {
         this.setState({query: e.target.value})
         if (e.target.value.length >= 13 && /^\d+$/.test(e.target.value)){
             e.preventDefault()
-            // let base_url = window.location.href
-            // base_url = base_url.split('?')[0]
             console.log(this.state.query)
             window.location = '/busca?query='+e.target.value
             this.setState({query: ''})
@@ -93,10 +86,11 @@ export class MyMenu extends React.Component {
         
         if(diferenca>intervalo){
             this.setState({lastUpdate: agora})
-            let url = 'http://localhost:3000/categorias'  
+            let url = api_address+'/categorias'  
             axios({
               method: 'GET',
               url: url,
+              headers: {'Authorization': 'Token '+localStorage.getItem('token')}
             }).then(res => {
               this.setState({items: res.data})
             })
@@ -122,9 +116,6 @@ export class MyMenu extends React.Component {
             <div>
                 <div className="card">
                     <Menubar model={items} start={start} end={end} />
-                    {/* <Dialog header={"teste"} visible={true}
-                    style={{ width: '75vw' }} onHide={() => this.setState({displayModal: false})}>
-                    </Dialog> */}
                 </div>
 
             </div>
