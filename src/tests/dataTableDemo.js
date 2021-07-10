@@ -1,6 +1,7 @@
 import axios from 'axios'
 import  {api_address }  from '../proxy/proxy.js'
 import { useLocalStorage } from '../requests/greenHooks.js'
+import { confirmDialog } from 'primereact/confirmdialog'
 
 import React, { useState, useEffect,useRef } from 'react';
 import { DataTable } from 'primereact/datatable';

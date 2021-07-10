@@ -20,6 +20,9 @@ export default function Login(props){
     const [isRep,setIsRep] = useLocalStorage("isRep",null)
     const [,setUsername] = useLocalStorage("username",null)
     const [,setCarrinhoId] = useLocalStorage("carrinhoId",null)
+    const [,setCategorias] = useLocalStorage("categorias",[])
+    const [,setColecoes] = useLocalStorage("colecoes",[])
+    const [,setPeriodos] = useLocalStorage("periodos",[])
     const message = useRef(null)
 
     useEffect(() => {
@@ -45,6 +48,9 @@ export default function Login(props){
           setIsRep(response.data['isRep'])
           setUsername(response.data['username'])
           setCarrinhoId(null)
+          setCategorias(response.data['cats'])
+          setColecoes(response.data['colecoes'])
+          setPeriodos(response.data['periodos'])
           window.location.href = '/'
         })
       }).catch(function (err){

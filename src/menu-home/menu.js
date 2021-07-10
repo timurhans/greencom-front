@@ -1,4 +1,4 @@
-import React, { useRef }  from 'react';
+import React, { useState,useRef }  from 'react';
 import { Menubar } from 'primereact/menubar';
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
@@ -11,28 +11,42 @@ import  {api_address }  from '../proxy/proxy.js'
 const MenuPerfil = () => {
     const menu = useRef(null);
     const [username, ] = useLocalStorage("username",null)
+    const [isRep, ] = useLocalStorage("isRep",null)
+    
+    let items_perfil = [
+            {
+                label: 'Conta',
+                icon: 'pi pi-user',
+                url: '/conta'
+            },
+            {
+                label: 'Pedidos',
+                icon: 'pi pi-upload',
+                url: '/pedidos'
+            },
+
+        ]
+        if (isRep){
+            items_perfil.push({
+                label: 'Promocoes',
+                icon: 'pi pi-external-link',
+                url: '/promocoes'
+            })
+            items_perfil.push({
+                label: 'Clientes',
+                icon: 'pi pi-external-link',
+                url: '/clientes'
+            })
+
+        }    
     const items = [
         {   
             label:username,
-            items: [
-                {
-                    label: 'Clientes',
-                    icon: 'pi pi-external-link',
-                    url: '/clientes'
-                },
-                {
-                    label: 'Pedidos',
-                    icon: 'pi pi-upload',
-                    url: '/pedidos'
-                },
-                {
-                    label: 'Conta',
-                    icon: 'pi pi-user',
-                    url: '/conta'
-                }
-            ]
+            items: items_perfil
         }
-    ];
+    ]
+
+
 
     return (
         <>
@@ -43,83 +57,129 @@ const MenuPerfil = () => {
 }
 
 
-export class MyMenu extends React.Component {
-    constructor(props) {
-      super(props)
+// export class MyMenu extends React.Component {
+//     constructor(props) {
+//       super(props)
         
-      this.state = {
-          items: [],
-          query: '',
-          lastUpdate: 1623533795696,
-          displayModal : true
-        }
-    }
+//       this.state = {
+//           items: [],
+//           query: '',
+//           lastUpdate: 1623533795696,
+//           displayModal : true
+//         }
+//     }
   
-    componentDidMount() {
-      this.updateCats();
-    }
+//     componentDidMount() {
+//       this.updateCats();
+//     }
 
-    handleSearch = (e) =>{
-        if (this.state.query !== ''){
+//     handleSearch = (e) =>{
+//         if (this.state.query !== ''){
+//             e.preventDefault()
+//             window.location = '/busca?query='+this.state.query
+//             this.setState({query: ''})
+//         }
+
+//     }
+//     handleChangeSearch = (e) =>{
+//         //Faz submit automaticamente na busca caso seja codigo de barras
+//         this.setState({query: e.target.value})
+//         if (e.target.value.length >= 13 && /^\d+$/.test(e.target.value)){
+//             e.preventDefault()
+//             console.log(this.state.query)
+//             window.location = '/busca?query='+e.target.value
+//             this.setState({query: ''})
+//         }
+
+//     }
+  
+//     updateCats() {
+//         let intervalo = 900000
+//         let agora = Date.now()
+//         let diferenca = agora-this.state.lastUpdate
+        
+//         if(diferenca>intervalo){
+//             this.setState({lastUpdate: agora})
+//             let url = api_address+'/categorias'  
+//             axios({
+//               method: 'GET',
+//               url: url,
+//               headers: {'Authorization': 'Token '+localStorage.getItem('token')}
+//             }).then(res => {
+//               this.setState({items: res.data})
+//             })
+//         }
+
+//     }
+  
+//     render() {
+//         const items = this.state.items
+//         const start = <a href="/"><img alt="logo" src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png" height="40" className="p-mr-2"></img></a>
+//         //Mostra lateral do menu apenas para usuario logado
+//         let end = <a href="/login">Login</a>
+//         if(this.props.loggedIn){
+            
+//             end = <> 
+//             <InputText onChange={this.handleChangeSearch} placeholder="Buscar" type="text" />
+//             <Button onClick={this.handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
+//             <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
+//             <MenuPerfil></MenuPerfil>
+//             </>
+//         }
+//         return (
+//             <div>
+//                 <div className="card">
+//                     <Menubar model={items} start={start} end={end} />
+//                 </div>
+
+//             </div>
+//         )
+//     }
+// }
+
+export function MyMenu(props){
+    const [items,] = useLocalStorage("categorias",[])
+    const [query,setQuery] = useState('')
+
+    const handleSearch = (e) =>{
+        if (query !== ''){
             e.preventDefault()
-            window.location = '/busca?query='+this.state.query
-            this.setState({query: ''})
+            window.location = '/busca?query='+query
+            setQuery('')
         }
 
     }
-    handleChangeSearch = (e) =>{
+    const handleChangeSearch = (e) =>{
         //Faz submit automaticamente na busca caso seja codigo de barras
-        this.setState({query: e.target.value})
+        setQuery(e.target.value)
         if (e.target.value.length >= 13 && /^\d+$/.test(e.target.value)){
             e.preventDefault()
-            console.log(this.state.query)
             window.location = '/busca?query='+e.target.value
-            this.setState({query: ''})
+            setQuery('')
         }
 
     }
-  
-    updateCats() {
-        let intervalo = 900000
-        let agora = Date.now()
-        let diferenca = agora-this.state.lastUpdate
+
+
+    const start = <a href="/"><img alt="logo" src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png" height="40" className="p-mr-2"></img></a>
+    //Mostra lateral do menu apenas para usuario logado
+    let end = <a href="/login">Login</a>
+    if(props.loggedIn){
         
-        if(diferenca>intervalo){
-            this.setState({lastUpdate: agora})
-            let url = api_address+'/categorias'  
-            axios({
-              method: 'GET',
-              url: url,
-              headers: {'Authorization': 'Token '+localStorage.getItem('token')}
-            }).then(res => {
-              this.setState({items: res.data})
-            })
-        }
-
+        end = <> 
+        <InputText onChange={handleChangeSearch} placeholder="Buscar" type="text" />
+        <Button onClick={handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
+        <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
+        <MenuPerfil></MenuPerfil>
+        </>
     }
-  
-    render() {
-        const items = this.state.items
-        const start = <a href="/"><img alt="logo" src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png" height="40" className="p-mr-2"></img></a>
-        //Mostra lateral do menu apenas para usuario logado
-        let end = <a href="/login">Login</a>
-        if(this.props.loggedIn){
-            
-            end = <> 
-            <InputText onChange={this.handleChangeSearch} placeholder="Buscar" type="text" />
-            <Button onClick={this.handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
-            <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
-            <MenuPerfil></MenuPerfil>
-            </>
-        }
-        return (
-            <div>
-                <div className="card">
-                    <Menubar model={items} start={start} end={end} />
-                </div>
 
+    return (
+        <div>
+            <div className="card">
+                <Menubar model={items} start={start} end={end} />
             </div>
-        )
-    }
-}
 
+        </div>
+    )
+}

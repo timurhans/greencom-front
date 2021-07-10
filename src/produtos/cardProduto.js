@@ -6,7 +6,6 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import  usePeriodos, {useLocalStorage } from '../requests/greenHooks.js'
-import Cookies from 'js-cookie'
 import axios from 'axios'
 import 'primeflex/primeflex.css';
 import  {api_address }  from '../proxy/proxy.js'
@@ -112,22 +111,28 @@ function TableProds(props) {
     
         console.log(data)
         console.log(config['headers'])
-    
-        axios.post(api_address+'/carrinho/',data,config)
-        .then(function (response){
-            if (response.data['confirmed']){
-                message.current.show([
-                    { severity: 'success', summary: response.data['message'], sticky: true }
-                ])
-                setCarrinhoId(response.data['carrinhoId'])       
-            }else{
-                message.current.show([
-                    { severity: 'error', summary: response.data['message'], sticky: true }
-                ])
-            }
-        }).catch(error => {
-            console.log(error.message)
-        })
+        if (qtd_total>0){
+            axios.post(api_address+'/carrinho/',data,config)
+            .then(function (response){
+                if (response.data['confirmed']){
+                    message.current.show([
+                        { severity: 'success', summary: response.data['message'], sticky: true }
+                    ])
+                    setCarrinhoId(response.data['carrinhoId'])       
+                }else{
+                    message.current.show([
+                        { severity: 'error', summary: response.data['message'], sticky: true }
+                    ])
+                }
+            }).catch(error => {
+                console.log(error.message)
+            })
+        }else{
+            message.current.show([
+                { severity: 'error', summary: "Quantidade deve ser maior que 0", sticky: false }
+            ])            
+        }
+
     }
         
     return (

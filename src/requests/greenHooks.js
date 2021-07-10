@@ -32,6 +32,10 @@ export function useProductSearch(colecao,periodo,clienteId) {
     useEffect(() => {
       const values = queryString.parse(window.location.search) //busca get parameters
       let url = api_address+location.pathname+'/'
+      let colecao_busca = colecao
+      if (colecao_busca === "Todas")colecao_busca = null
+      let periodo_busca = periodo
+      if (periodo_busca === "Todos")periodo_busca = null 
       
       axios({
         method: 'GET',
@@ -39,8 +43,8 @@ export function useProductSearch(colecao,periodo,clienteId) {
         headers:{'Authorization': 'Token '+token},
         params:{
           query:values.query,
-          colecao:colecao,
-          periodo:periodo,
+          colecao:colecao_busca,
+          periodo:periodo_busca,
           "clienteId":clienteId
         }
       }).then(res => {
@@ -77,6 +81,8 @@ export default function usePeriodos(produto,periodo,periodo_atual=null) {
 
 export function useCartSearch(counter,clienteId) {
   const [carrinho, setCarrinho] = useState([])
+  const [valorTotal, setValorTotal] = useState(0)
+  const [qtdTotal, setQtdTotal] = useState(0)
   const [observacoes, setObservacoes] = useState("")
   const [emptyMessage, setEmptyMessage] = useState(null)
   const [carrinhoId,setCarrinhoId ] = useLocalStorage("carrinhoId",null)
@@ -100,12 +106,14 @@ export function useCartSearch(counter,clienteId) {
       setCarrinho(res.data['dados'])
       setObservacoes(res.data['observacoes'])
       setEmptyMessage(res.data['message'])
+      setValorTotal(res.data['valor_total'])
+      setQtdTotal(res.data['qtd_total'])
       
     })
 
-  },[counter,carrinhoId,observacoes])
+  },[counter,carrinhoId,observacoes,valorTotal,qtdTotal])
 
-  return { carrinho, emptyMessage,observacoes }
+  return { carrinho, emptyMessage,observacoes,valorTotal,qtdTotal }
 }
 
 export function useFilterOptions() {

@@ -18,32 +18,16 @@ export default function Produtos() {
   const [rows, setRows] = useState(12)
   const [qtd, setQtd] = useState(0)
   const [token,setToken] = useLocalStorage("token",null)
-  const [colecao, setColecao] = useLocalStorage("colecao",null)
-  const [periodo, setPeriodo] = useLocalStorage("periodo",null)
+  const [colecao, setColecao] = useLocalStorage("colecao","Todas")
+  const [periodo, setPeriodo] = useLocalStorage("periodo","Todos")
   const [clienteId, ] = useLocalStorage("clienteId",null)
   const [tamColuna,setTamColuna] = useLocalStorage("tamColuna",2)
   const [classColuna,setclassColuna] = useState("p-col-12 p-md-6 p-lg-"+tamColuna)
   const [displayModal, setDisplayModal] = useState(false);
+  const [colecoesOptions,] = useLocalStorage("colecoes",[])
+  const [periodosOptions,] = useLocalStorage("periodos",[])
 
-  //------------FILTROS
 
-  const updateFilterOptions = () =>{
-      
-    let url = api_address+'/filterOptions'
-    axios({
-      method: 'GET',
-      headers:{'Authorization': 'Token '+token},
-      url: url,
-    }).then(res => {
-      console.log(res.data)
-      setColecoesOptions(res.data['colecoes']) 
-      setPeriodosOptions(res.data['periodos'])
-    })
-  }
-  const [colecoesOptions,setColecoesOptions] = useState([]) //['Todas','Verao 2021','Inverno 2021','Verao 2020','Outras Coleções']
-  const [periodosOptions,setPeriodosOptions] = useState([])// ['Todos','Junho','Julho']
-
-  console.log(colecoesOptions)
   const tamColOptions = [2,3,4]
 
   const onClick = () => {
@@ -54,7 +38,6 @@ export default function Produtos() {
   }
 
   useEffect(() => {
-    updateFilterOptions()
     document.title = "Greenish B2B | Produtos"
   }, [])
 

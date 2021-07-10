@@ -8,7 +8,10 @@ import { Button } from 'primereact/button';
 import axios from 'axios'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea';
+import { InputSwitch } from 'primereact/inputswitch';
 import  {api_address }  from '../proxy/proxy.js'
+import { ToggleButton } from 'primereact/togglebutton';
+
 
 
 export default function Carrinho() {
@@ -21,11 +24,14 @@ export default function Carrinho() {
   const [token,setToken] = useLocalStorage("token",null)
   const [isRep,setIsRep ] = useLocalStorage("isRep",null)
   const [displayModal, setDisplayModal] = useState(false)
+  const [isReal, setIsReal] = useState(false)
 
   const {
     carrinho,
     emptyMessage,
-    observacoes
+    observacoes,
+    valorTotal,
+    qtdTotal
   } = useCartSearch(counter,clienteId)
 
   const [observacoesNovo,setObservacoesNovo] = useState("")
@@ -56,13 +62,16 @@ export default function Carrinho() {
   }, [carrinho,emptyMessage,carrinhoId,counter])
 
   const handleSave = () => {
+    console.log(!isReal)
     axios({
         method: 'GET',
         url: api_address+'/pedidos/salva/'+carrinhoId+'/',
         headers: {'Authorization': 'Token '+token},
         params:{
-          observacoes:observacoesNovo
+          observacoes:observacoesNovo,
+          isTeste: !isReal
         }
+        
       }).then(res => {
         if(res.data['confirmed']){
           if(isRep){
@@ -82,16 +91,24 @@ export default function Carrinho() {
   return (
     <>
     <p>{emptyMessage}</p>
-    <p>{"Cliente: "+clienteNome }</p>
+    
+    <p>{"Cliente: "+clienteNome + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p>
     <Button label="Salvar" onClick={() => setDisplayModal(true)} className="p-mr-2" />
     <Dialog header="Observacoes" visible={displayModal} onHide={()=>setDisplayModal(false)}>     
       <div>
           <InputTextarea rows={10} cols={50} value={observacoesNovo} onChange={(e) => setObservacoesNovo(e.target.value)} />
       </div>
-      {/* <div>
-        <InputTextarea rows={10} cols={50} value={observacoesNovo} onChange={(e) => setObservacoesNovo(e.target.value)} />
-      </div> */}
-      <Button label="Salvar" onClick={() => handleSave()} className="p-mr-2" />
+      <div>
+        <ToggleButton checked={isReal} className="p-d-block p-mx-auto p-mt-2" onChange={(e) => setIsReal(e.value)}
+         onLabel="Real" offLabel="Teste" onIcon="pi pi-check" offIcon="pi pi-times" style={{width: '10em'}} />
+      </div>
+      <div>
+        <Button label="Salvar" className="p-d-block p-mx-auto p-mt-2" onClick={() => handleSave()} />
+      </div>
+
+
+      
+      
     </Dialog>
     <div className="p-grid">{listItems}</div>
     </>
