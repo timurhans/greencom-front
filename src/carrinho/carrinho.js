@@ -3,7 +3,8 @@ import { useCartSearch,useLocalStorage } from '../requests/greenHooks.js'
 import 'primeflex/primeflex.css';
 import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card';
-import CardCarrinho from './cardCarrinho.js'
+// import CardCarrinho from './cardCarrinho.js'
+import CardCarrinho from './cardCarrinhoNovo.js'
 import { Button } from 'primereact/button';
 import axios from 'axios'
 import { Dialog } from 'primereact/dialog'
@@ -11,6 +12,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { InputSwitch } from 'primereact/inputswitch';
 import  {api_address }  from '../proxy/proxy.js'
 import { ToggleButton } from 'primereact/togglebutton';
+import { SelectButton } from 'primereact/selectbutton';
 
 
 
@@ -24,7 +26,7 @@ export default function Carrinho() {
   const [token,setToken] = useLocalStorage("token",null)
   const [isRep,setIsRep ] = useLocalStorage("isRep",null)
   const [displayModal, setDisplayModal] = useState(false)
-  const [isReal, setIsReal] = useState(false)
+  const [tipoPedido, setTipoPedido] = useState("Teste")
 
   const {
     carrinho,
@@ -62,14 +64,17 @@ export default function Carrinho() {
   }, [carrinho,emptyMessage,carrinhoId,counter])
 
   const handleSave = () => {
-    console.log(!isReal)
+    let isTeste = false
+    if(tipoPedido === "Teste"){
+      isTeste = true
+    }
     axios({
         method: 'GET',
         url: api_address+'/pedidos/salva/'+carrinhoId+'/',
         headers: {'Authorization': 'Token '+token},
         params:{
           observacoes:observacoesNovo,
-          isTeste: !isReal
+          isTeste: isTeste
         }
         
       }).then(res => {
@@ -99,8 +104,7 @@ export default function Carrinho() {
           <InputTextarea rows={10} cols={50} value={observacoesNovo} onChange={(e) => setObservacoesNovo(e.target.value)} />
       </div>
       <div>
-        <ToggleButton checked={isReal} className="p-d-block p-mx-auto p-mt-2" onChange={(e) => setIsReal(e.value)}
-         onLabel="Real" offLabel="Teste" onIcon="pi pi-check" offIcon="pi pi-times" style={{width: '10em'}} />
+         <SelectButton value={tipoPedido} className="p-d-block p-mx-auto p-mt-2" options={["Teste","Real"]} onChange={(e) => setTipoPedido(e.value)} />
       </div>
       <div>
         <Button label="Salvar" className="p-d-block p-mx-auto p-mt-2" onClick={() => handleSave()} />

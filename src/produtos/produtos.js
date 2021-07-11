@@ -90,7 +90,7 @@ export default function Produtos() {
                         />
                     </div>                  
                     <div className="p-col-12 p-md-6 p-lg-2">
-                        <h3>Coluna</h3>
+                        <h3>Tamanho Imagem</h3>
                         <Dropdown id="dropdown" value={tamColuna} options={tamColOptions}
                         onChange={(e) => setTamColuna(e.value)}
                         />
