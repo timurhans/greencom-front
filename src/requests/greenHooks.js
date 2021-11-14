@@ -29,7 +29,7 @@ export function useLocalStorage(key,initialValue){
 }
 
 
-export function useProductSearch(colecao,periodo,clienteId) {
+export function useProductSearch(colecao,periodo,clienteId,orderBy) {
     const [produtos, setProdutos] = useState({})
     const [isBarCode, setIsBarCode] = useState(false)
     const location = useLocation()
@@ -52,6 +52,7 @@ export function useProductSearch(colecao,periodo,clienteId) {
           query:values.query,
           colecao:colecao_busca,
           periodo:periodo_busca,
+          order_by:orderBy,
           "clienteId":clienteId
         }
       }).then(res => {
@@ -59,7 +60,7 @@ export function useProductSearch(colecao,periodo,clienteId) {
         console.log(res.data['isBarCode'])
         setIsBarCode(res.data['isBarCode'])
       })
-    }, [location,colecao,periodo,clienteId])
+    }, [location,colecao,periodo,clienteId,orderBy])
     return { produtos,isBarCode }
 }
 
@@ -169,9 +170,6 @@ export function useClients() {
 
   return { clientes }
 }
-
-
-
 
 
 
