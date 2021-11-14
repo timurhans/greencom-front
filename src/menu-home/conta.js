@@ -15,6 +15,7 @@ export default function Conta(props){
   const [token,setToken] = useLocalStorage("token",null)
   const [displayModalSenha, setDisplayModalSenha] = useState(false)
   const message = useRef(null)
+  const [tipoConta,] = useLocalStorage("tipoConta",null)
     
   useEffect(() => {
       document.title = "Greenish B2B | Conta"
@@ -24,8 +25,8 @@ export default function Conta(props){
         var config = {
           headers: {'Authorization': 'Token '+token}
         }
-        axios.get(api_address+'/accounts/logout',config)
-        .then(function (response){
+        axios.get(api_address+'/accounts/logout/',config)
+        .then(response => {
             localStorage.clear()
             window.location.href = '/'
         })
@@ -41,7 +42,7 @@ export default function Conta(props){
             headers: {'Authorization': 'Token '+token}
           }
           axios.post(api_address+'/change_password/',data,config)
-          .then(function (response){
+          .then(response => {
               if (response.data['confirmed']){
                 localStorage.clear()
                 window.location.href = '/login'                
@@ -74,8 +75,7 @@ export default function Conta(props){
             <h5></h5>
             <Button label="Confirmar" onClick={() => changePassword()} />
         </Dialog>
-        
-        <Button label="Alterar Senha" onClick={() => setDisplayModalSenha(true)} />
+        {tipoConta==="visitante" ? <></> : <Button label="Alterar Senha" onClick={() => setDisplayModalSenha(true)} /> }
         <Button label="Logout" onClick={() => handleLogout()} />
       </div>
   

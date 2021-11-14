@@ -7,8 +7,6 @@ import { Paginator } from 'primereact/paginator';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import axios from 'axios'
-import  {api_address }  from '../proxy/proxy.js'
 
 
 export default function Produtos() {
@@ -44,9 +42,10 @@ export default function Produtos() {
   //-------------------
 
   const {
-    produtos,
+    produtos,isBarCode
   } = useProductSearch(colecao,periodo,clienteId)
 
+  console.log(isBarCode)
 
 
   const handlePageChange = (event) => {
@@ -59,11 +58,12 @@ export default function Produtos() {
       setQtd(produtos['lista'].length)
       const lista = produtos['lista'].slice(first,first+rows)
       let listItemsProv = <div className={classColuna}>Entrou</div>
-      listItemsProv = lista.map((val,index) => <div className={classColuna}><CardProduto produto={val} key={index}></CardProduto></div>)
+      listItemsProv = lista.map((val,index) => <div className={classColuna}><CardProduto
+       produto={val} isBarCode={isBarCode} key={index}></CardProduto></div>)
       setListItems(listItemsProv)
       window.scrollTo(0, 0)
     }
-  }, [produtos,classColuna,first,rows])
+  }, [produtos,classColuna,first,rows,isBarCode])
 
   useEffect(() => {
     setclassColuna("p-col-12 p-md-6 p-lg-"+tamColuna)

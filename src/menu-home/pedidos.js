@@ -26,7 +26,7 @@ const Pedidos = () => {
     const [isRep,] = useLocalStorage("isRep",null)
 
     const getPedidos = () =>{
-        let url = api_address+'/pedidos'
+        let url = api_address+'/pedidos/'
         axios({
             method: 'GET',
             url: url,
@@ -56,7 +56,7 @@ const Pedidos = () => {
     const alterar_pedido = (carrrinhoId,id,nome) =>{
         axios({
             method: 'GET',
-            url: api_address+'/pedidos/retoma/'+carrrinhoId,
+            url: api_address+'/pedidos/retoma/'+carrrinhoId+'/',
             headers: {'Authorization': 'Token '+token},
             params:{
                 carrinhoAtualId:carrinhoAtualId
@@ -80,7 +80,7 @@ const Pedidos = () => {
 
         axios({
             method: 'GET',
-            url: api_address+'/pedidos/processa/'+rowData.id,
+            url: api_address+'/pedidos/processa/'+rowData.id+'/',
             headers: {'Authorization': 'Token '+token}
           }).then(res => {
             setDisplayModal(false)
@@ -125,7 +125,10 @@ const Pedidos = () => {
     }
 
     const dateTemplate = (rowData) => {
-        return moment(rowData.data_criacao, "YYYY-MM-DDTHH:mm:ssZ").format('MM/DD/YYYY');
+        if(rowData.data_liberacao == null){
+            return "..."
+        }
+        return moment(rowData.data_liberacao, "YYYY-MM-DDTHH:mm:ssZ").format('DD/MM/YYYY');
     }
 
 
@@ -135,7 +138,6 @@ const Pedidos = () => {
             <Dialog title="Processando" visible={displayModal} onHide={()=>""}><ProgressSpinner /></Dialog>
             <div className="card">
                 <DataTable value={pedidos}>
-                    <Column field="id" header="ID" ></Column>
                     <Column field="cliente__razao_social" header="Razao Social" filter filterPlaceholder="Buscar"></Column>
                     <Column field="colecao" header="Colecao" filter filterPlaceholder="Buscar"></Column>
                     <Column header="Valor" body={valorTotalTemplate}></Column>

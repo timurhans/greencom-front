@@ -18,7 +18,7 @@ export class Home extends React.Component {
     }  
     updateBanners() {
 
-        let url = api_address+'/home'
+        let url = api_address+'/home/'
         axios({
             method: 'GET',
             url: url,

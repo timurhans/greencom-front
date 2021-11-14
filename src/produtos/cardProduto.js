@@ -14,6 +14,12 @@ import  {api_address }  from '../proxy/proxy.js'
 
 export default function CardProduto(props) {
     const [displayModal, setDisplayModal] = useState(false)
+    console.log(props.isBarCode)
+
+    useEffect(() => {
+        setDisplayModal(props.isBarCode)
+    
+      }, [props.isBarCode])
     
     const onClick = () => {
         setDisplayModal(true)
@@ -38,7 +44,7 @@ return (
                             <img top width="100%" src={props.produto.produto__url_imagem} alt="Sem Imagem" />
                         </div>
                         <div className="p-col-fixed" style={{ width: '500px'}}>
-                            <TableProds produto={props.produto}></TableProds>
+                            <TableProds isBarcode={props.isBarCode} onSave={onHide} produto={props.produto}></TableProds>
                         </div>  
                     </div>
 
@@ -51,10 +57,18 @@ return (
 )
 }
 
+function definePeriodo(isBarcode){
+    
+    if (isBarcode){
+        return 'Pre-selecionados'
+    }else{
+        return ''
+    }
+}
 
 function TableProds(props) {
     const [produto, ] = useState(props.produto)
-    const [periodo, setPeriodo] = useState('')
+    const [periodo, setPeriodo] = useState(definePeriodo(props.isBarcode))
     const [pedido, setPedido] = useState({})
     const [linhasDados, setLinhasDados] = useState(<div></div>)
     const [token,setToken] = useLocalStorage("token",null)
@@ -113,11 +127,12 @@ function TableProds(props) {
         console.log(config['headers'])
         if (qtd_total>0){
             axios.post(api_address+'/carrinho/',data,config)
-            .then(function (response){
+            .then(response => {
                 if (response.data['confirmed']){
-                    message.current.show([
-                        { severity: 'success', summary: response.data['message'], sticky: true }
-                    ])
+                    props.onSave()
+                    // message.current.show([
+                    //     { severity: 'success', summary: response.data['message'], sticky: true }
+                    // ])
                     setCarrinhoId(response.data['carrinhoId'])       
                 }else{
                     message.current.show([
@@ -157,6 +172,9 @@ function TableProds(props) {
 function LinhaDados(props){
 
     const handleChange = (valor,props,ordem) => {
+        if(valor == null){
+            valor = 0
+        }
         let ped_prov = props.pedido
         ped_prov[props.dados.cor][ordem] = valor
         props.setPedido(ped_prov)

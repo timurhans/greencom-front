@@ -36,7 +36,7 @@ export default function CardCarrinho(props) {
     const handleDelete = () => {
         axios({
             method: 'GET',
-            url: api_address+'/carrinho/delete_item/'+props.produto.id,
+            url: api_address+'/carrinho/delete_item/'+props.produto.id+'/',
             headers: {'Authorization': 'Token '+token}
           }).then(res => {
             props.forceUpdate()
@@ -194,7 +194,7 @@ function TableProds(props) {
             headers: {'Authorization': 'Token '+token}
         }
         if (qtd_total>0){
-            axios.post(api_address+'/carrinho/update/'+produto.id,data,config,)
+            axios.post(api_address+'/carrinho/update/'+produto.id+'/',data,config,)
             .then(function (response){
                 if (response.data['confirmed']){
                     message.current.show([

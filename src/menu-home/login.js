@@ -23,6 +23,7 @@ export default function Login(props){
     const [,setCategorias] = useLocalStorage("categorias",[])
     const [,setColecoes] = useLocalStorage("colecoes",[])
     const [,setPeriodos] = useLocalStorage("periodos",[])
+    const [,setTipoConta] = useLocalStorage("tipoConta",[])
     const message = useRef(null)
 
     useEffect(() => {
@@ -37,11 +38,13 @@ export default function Login(props){
       data.append("password",senha)
   
       axios.post(api_address+'/api-token-auth/',data)
-      .then(function (response){
+      .then(response => {
         let config = {headers:{'Authorization': 'Token '+response.data['token']}}
+        console.log(config)
         setToken(response.data['token'])
-        axios.get(api_address+'/login',config)
-        .then(function (response){
+        axios.get(api_address+'/login/',config)
+        .then(response => {
+          console.log(response.data)
           setLoggedin(true)
           setClienteId(response.data['clienteId'])
           setClienteNome(response.data['clienteNome'])
@@ -51,6 +54,7 @@ export default function Login(props){
           setCategorias(response.data['cats'])
           setColecoes(response.data['colecoes'])
           setPeriodos(response.data['periodos'])
+          setTipoConta(response.data['tipo_conta'])
           window.location.href = '/'
         })
       }).catch(function (err){

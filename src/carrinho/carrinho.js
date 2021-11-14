@@ -27,13 +27,15 @@ export default function Carrinho() {
   const [isRep,setIsRep ] = useLocalStorage("isRep",null)
   const [displayModal, setDisplayModal] = useState(false)
   const [tipoPedido, setTipoPedido] = useState("Teste")
+  const [tipoConta,] = useLocalStorage("tipoConta",null)
 
   const {
     carrinho,
     emptyMessage,
     observacoes,
     valorTotal,
-    qtdTotal
+    qtdTotal,
+    razaoSocial
   } = useCartSearch(counter,clienteId)
 
   const [observacoesNovo,setObservacoesNovo] = useState("")
@@ -64,40 +66,58 @@ export default function Carrinho() {
   }, [carrinho,emptyMessage,carrinhoId,counter])
 
   const handleSave = () => {
-    let isTeste = false
-    if(tipoPedido === "Teste"){
-      isTeste = true
-    }
-    axios({
+
+    if(tipoConta==="visitante"){
+      axios({
         method: 'GET',
-        url: api_address+'/pedidos/salva/'+carrinhoId+'/',
-        headers: {'Authorization': 'Token '+token},
-        params:{
-          observacoes:observacoesNovo,
-          isTeste: isTeste
-        }
-        
+        url: api_address+'/pedidos/gera_pdf/'+carrinhoId+'/',
+        headers: {'Authorization': 'Token '+token},        
       }).then(res => {
         if(res.data['confirmed']){
-          if(isRep){
-            setClienteId(null)
-            setClienteNome(null)
-            setCarrinhoId(null)
-          }else{
-            setCarrinhoId(null)
-          }
-          window.location.href = '/pedidos'
+          window.open(api_address+'/'+res.data['file'],'popUpWindow')
+          // window.location.href = 
         }else{
-          console.log(res.data)//Fazer Logica para mostrar mensagem de erro
+          console.log(res.data)
         }
       })
+    }else{
+      let isTeste = false
+      if(tipoPedido === "Teste"){
+        isTeste = true
+      }
+      axios({
+          method: 'GET',
+          url: api_address+'/pedidos/salva/'+carrinhoId+'/',
+          headers: {'Authorization': 'Token '+token},
+          params:{
+            observacoes:observacoesNovo,
+            isTeste: isTeste
+          }
+          
+        }).then(res => {
+          if(res.data['confirmed']){
+            if(isRep){
+              setClienteId(null)
+              setClienteNome(null)
+              setCarrinhoId(null)
+            }else{
+              setCarrinhoId(null)
+            }
+            window.location.href = '/pedidos'
+          }else{
+            console.log(res.data)//Fazer Logica para mostrar mensagem de erro
+          }
+        })
+    }
+
+
   }
 
   return (
     <>
     <p>{emptyMessage}</p>
     
-    <p>{"Cliente: "+clienteNome + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p>
+    <p>{"Cliente: "+razaoSocial + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p>
     <Button label="Salvar" onClick={() => setDisplayModal(true)} className="p-mr-2" />
     <Dialog header="Observacoes" visible={displayModal} onHide={()=>setDisplayModal(false)}>     
       <div>

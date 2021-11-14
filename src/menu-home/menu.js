@@ -3,9 +3,7 @@ import { Menubar } from 'primereact/menubar';
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import axios from 'axios'
 import { useLocalStorage } from '../requests/greenHooks.js'
-import  {api_address }  from '../proxy/proxy.js'
 
 //Menu com dropdown para pedidos,clientes e etc
 const MenuPerfil = () => {
@@ -57,89 +55,10 @@ const MenuPerfil = () => {
 }
 
 
-// export class MyMenu extends React.Component {
-//     constructor(props) {
-//       super(props)
-        
-//       this.state = {
-//           items: [],
-//           query: '',
-//           lastUpdate: 1623533795696,
-//           displayModal : true
-//         }
-//     }
-  
-//     componentDidMount() {
-//       this.updateCats();
-//     }
-
-//     handleSearch = (e) =>{
-//         if (this.state.query !== ''){
-//             e.preventDefault()
-//             window.location = '/busca?query='+this.state.query
-//             this.setState({query: ''})
-//         }
-
-//     }
-//     handleChangeSearch = (e) =>{
-//         //Faz submit automaticamente na busca caso seja codigo de barras
-//         this.setState({query: e.target.value})
-//         if (e.target.value.length >= 13 && /^\d+$/.test(e.target.value)){
-//             e.preventDefault()
-//             console.log(this.state.query)
-//             window.location = '/busca?query='+e.target.value
-//             this.setState({query: ''})
-//         }
-
-//     }
-  
-//     updateCats() {
-//         let intervalo = 900000
-//         let agora = Date.now()
-//         let diferenca = agora-this.state.lastUpdate
-        
-//         if(diferenca>intervalo){
-//             this.setState({lastUpdate: agora})
-//             let url = api_address+'/categorias'  
-//             axios({
-//               method: 'GET',
-//               url: url,
-//               headers: {'Authorization': 'Token '+localStorage.getItem('token')}
-//             }).then(res => {
-//               this.setState({items: res.data})
-//             })
-//         }
-
-//     }
-  
-//     render() {
-//         const items = this.state.items
-//         const start = <a href="/"><img alt="logo" src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png" height="40" className="p-mr-2"></img></a>
-//         //Mostra lateral do menu apenas para usuario logado
-//         let end = <a href="/login">Login</a>
-//         if(this.props.loggedIn){
-            
-//             end = <> 
-//             <InputText onChange={this.handleChangeSearch} placeholder="Buscar" type="text" />
-//             <Button onClick={this.handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
-//             <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
-//             <MenuPerfil></MenuPerfil>
-//             </>
-//         }
-//         return (
-//             <div>
-//                 <div className="card">
-//                     <Menubar model={items} start={start} end={end} />
-//                 </div>
-
-//             </div>
-//         )
-//     }
-// }
-
 export function MyMenu(props){
     const [items,] = useLocalStorage("categorias",[])
     const [query,setQuery] = useState('')
+    const [tipoConta,] = useLocalStorage("tipoConta",[])
 
     const handleSearch = (e) =>{
         if (query !== ''){
@@ -170,7 +89,7 @@ export function MyMenu(props){
         <InputText onChange={handleChangeSearch} placeholder="Buscar" type="text" />
         <Button onClick={handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
         <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
-        <MenuPerfil></MenuPerfil>
+        {tipoConta==="visitante" ? <Button icon="pi pi-user" onClick={(e) => window.location.href="/conta"} aria-controls="popup_menu" aria-haspopup /> : <MenuPerfil></MenuPerfil> }
         </>
     }
 

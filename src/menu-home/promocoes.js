@@ -21,7 +21,7 @@ const Promocoes = () => {
       }, [])
 
     const computaPromo = (id_promocao,id_condicao) =>{
-        let url = api_address+'/promocoes/'+carrinhoId
+        let url = api_address+'/promocoes/'+carrinhoId+'/'
         axios({
             method: 'GET',
             url: url,
@@ -39,7 +39,7 @@ const Promocoes = () => {
     }
 
     const removePromo = () =>{
-        let url = api_address+'/promocoes/remove/'+carrinhoId
+        let url = api_address+'/promocoes/remove/'+carrinhoId+'/'
         axios({
             method: 'GET',
             headers:{'Authorization': 'Token '+token},
@@ -53,7 +53,7 @@ const Promocoes = () => {
     }
 
     const getPromocoes = () =>{
-        let url = api_address+'/promocoes'
+        let url = api_address+'/promocoes/'
         axios({
             method: 'GET',
             headers:{'Authorization': 'Token '+token},

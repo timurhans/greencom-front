@@ -47,8 +47,8 @@ export default function CardCarrinho(props) {
             let config = {
                 headers: {'Authorization': 'Token '+token}
             }
-            axios.post(api_address+'/carrinho/update_periodo/'+props.produto.id,data,config,)
-            .then(function (response){
+            axios.post(api_address+'/carrinho/update_periodo/'+props.produto.id+'/',data,config,)
+            .then(response => {
                 if (response.data['confirmed']){
                     setPanelCollapsed(false)
                     props.forceUpdate()
@@ -67,7 +67,7 @@ export default function CardCarrinho(props) {
     const handleDelete = () => {
         axios({
             method: 'GET',
-            url: api_address+'/carrinho/delete_item/'+props.produto.id,
+            url: api_address+'/carrinho/delete_item/'+props.produto.id+'/',
             headers: {'Authorization': 'Token '+token}
           }).then(res => {
             props.forceUpdate()
@@ -175,8 +175,8 @@ function TableProds(props) {
             headers: {'Authorization': 'Token '+token}
         }
     
-        axios.post(api_address+'/carrinho/update_qtds/'+produto.id,data,config,)
-        .then(function (response){
+        axios.post(api_address+'/carrinho/update_qtds/'+produto.id+'/',data,config,)
+        .then(response => {
             if (response.data['confirmed']){
                 message.current.show([
                     { severity: 'success', summary: response.data['message'], sticky: true }
