@@ -7,6 +7,9 @@ import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-XGGNKTY87X")
 ReactDOM.render(
   <React.StrictMode>
     <App />

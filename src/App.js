@@ -8,6 +8,7 @@ import Conta from './menu-home/conta.js'
 import Produtos from './produtos/produtos.js'
 import Carrinho from './carrinho/carrinho.js'
 import DataTableBasicDemo from './tests/dataTableDemo.js'
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -35,6 +36,7 @@ class App extends React.Component {
 
   render(){
       const loggedIn = this.verificaLogin()
+
       
       return(
           <div>

@@ -4,7 +4,7 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import {Password} from 'primereact/password';
 import axios from 'axios'
-import Cookies from 'js-cookie'
+import ReactGA from "react-ga4";
 import { useLocalStorage } from '../requests/greenHooks.js'
 import { Messages } from 'primereact/messages'
 import  {api_address }  from '../proxy/proxy.js'
@@ -56,6 +56,10 @@ export default function Login(props){
           setPeriodos(response.data['periodos'])
           setTipoConta(response.data['tipo_conta'])
           window.location.href = '/'
+          ReactGA.event({
+            action: "login",
+            user_type: response.data['tipo_conta'],
+          })
         })
       }).catch(function (err){
         message.current.show([
