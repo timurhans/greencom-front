@@ -97,7 +97,7 @@ function TableProds(props) {
             let tams = dadosPeriodo.map((val) => <LinhaDados dados={val} pedido={pedido} setPedido={setPedido}></LinhaDados>)
             setLinhasDados(tams)
         }
-      }, [pedido])    
+      }, [pedido,dadosPeriodo])    
     
     const renderTamanhosGrid = (props) => {
         let prods_tams = JSON.parse(props.produto.produto__tamanhos)
