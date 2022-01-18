@@ -97,7 +97,7 @@ function TableProds(props) {
             let tams = dadosPeriodo.map((val) => <LinhaDados dados={val} pedido={pedido} setPedido={setPedido}></LinhaDados>)
             setLinhasDados(tams)
         }
-      }, [pedido,dadosPeriodo])    
+      }, [pedido,periodo])    
     
     const renderTamanhosGrid = (props) => {
         let prods_tams = JSON.parse(props.produto.produto__tamanhos)
@@ -185,9 +185,13 @@ function LinhaDados(props){
         if(Object.keys(props.pedido).length === 0){
             return elems.map((val) => val)
         }
+
+        console.log(props)
         for (var idx in props.dados.qtds){
 
             let i = idx
+
+            
 
             if (props.dados.liberacao){
                 elems.push(
@@ -200,7 +204,7 @@ function LinhaDados(props){
                 </div>
                 )
             }else{
-                console.log(props.dados.qtds)
+                
                 elems.push(
                 <div className="p-col-1 p-mt-4">
                     <span className="p-float-label">
