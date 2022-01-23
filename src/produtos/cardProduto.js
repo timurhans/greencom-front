@@ -27,9 +27,15 @@ export default function CardProduto(props) {
     const onHide = () => {
         setDisplayModal(false)
     }
+    let desconto
+    if(props.produto.produto__desconto>0){
+        desconto = " - "+parseFloat(props.produto.produto__desconto*100).toFixed()+"% OFF"
+    }else{
+        desconto = ""
+    }
     const header = <div>
         <h3>{props.produto.produto__descricao}</h3>
-        <p>{props.produto.produto__produto +" - "+props.produto.produto__linha+" - R$"+ props.produto.preco}</p>
+        <p>{props.produto.produto__produto +" - R$"+ props.produto.preco+desconto}</p>
         </div>
 return (
     <div className="p-shadow-2 p-m-2">

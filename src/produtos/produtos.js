@@ -18,7 +18,7 @@ export default function Produtos() {
   const [token,setToken] = useLocalStorage("token",null)
   const [colecao, setColecao] = useLocalStorage("colecao","Todas")
   const [periodo, setPeriodo] = useLocalStorage("periodo","Todos")
-    const [orderBy, setOrderBy] = useLocalStorage("orderBy","produto")
+  const [orderBy, setOrderBy] = useLocalStorage("orderBy","produto")
   const [clienteId, ] = useLocalStorage("clienteId",null)
   const [tamColuna,setTamColuna] = useLocalStorage("tamColuna",2)
   const [classColuna,setclassColuna] = useState("p-col-12 p-md-6 p-lg-"+tamColuna)
@@ -28,7 +28,7 @@ export default function Produtos() {
 
 
   const tamColOptions = [2,3,4]
-  const orderByOptions = ["produto","estoque"]
+  const orderByOptions = ["produto","estoque","desconto"]
 
   const onClick = () => {
     setDisplayModal(true)
