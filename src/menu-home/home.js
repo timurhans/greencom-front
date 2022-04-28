@@ -1,6 +1,20 @@
 import React from 'react';
 import axios from 'axios'
 import  {api_address }  from '../proxy/proxy.js'
+import './home.css';
+import { Carousel } from 'primereact/carousel';
+
+const bannersTemplate = (banner) => {
+    return (
+        <div className="product-item">
+            <div className="product-item-content">
+                <div className="mb-3">
+                <a href={banner.link} ><img src={banner.url_imagem}  className="product-image" /></a>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 
 export class Home extends React.Component {
@@ -18,7 +32,7 @@ export class Home extends React.Component {
     }  
     updateBanners() {
 
-        let url = api_address+'/home/'
+        let url = api_address+'/home'
         axios({
             method: 'GET',
             url: url,
@@ -29,11 +43,12 @@ export class Home extends React.Component {
     }
   
     render() {
-        const lista = this.state.banners.slice()
-        let banners_html = lista.map((val,index) => <a href={val.url}><img src={val.img}></img></a>)
+        // const lista = this.state.banners.slice()
+        // let banners_html = lista.map((val,index) => <a href={val.link}><img src={val.url_imagem}></img></a>)
         return (
             <div>
-                {banners_html}
+                <Carousel value={this.state.banners} numVisible={1} numScroll={1} //responsiveOptions={responsiveOptions}
+                itemTemplate={bannersTemplate} />
             </div>
         )
     }
