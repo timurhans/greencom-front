@@ -11,6 +11,7 @@ import { confirmDialog } from 'primereact/confirmdialog'
 import { Panel } from 'primereact/panel';
 import 'primeflex/primeflex.css';
 import  {api_address }  from '../proxy/proxy.js'
+import { InputTextarea } from 'primereact/inputtextarea';
 
 export default function CardCarrinho(props) {
     const [displayModal, setDisplayModal] = useState(false)
@@ -132,6 +133,8 @@ function TableProds(props) {
     const [linhasDados, setLinhasDados] = useState(<div></div>)
     const [clienteId, ] = useLocalStorage("clienteId",null)
     const [carrinhoId, ] = useLocalStorage("carrinhoId",null)
+    const [displayModalObs, setDisplayModalObs] = useState(false)
+    const [observacaoItem, setObservacaoItem] = useState(props.produto.observacao_item)
     const [token,] = useLocalStorage("token",null)
     
     const {
@@ -170,6 +173,7 @@ function TableProds(props) {
             "qtd_total":qtd_total,
             "clienteId":clienteId,
             "carrinhoId":carrinhoId,
+            "observacao_item":observacaoItem
         }
         var config = {
             headers: {'Authorization': 'Token '+token}
@@ -203,6 +207,12 @@ function TableProds(props) {
                 {renderTamanhosGrid()}
             </div>
             {linhasDados}
+            <Button label="Observação" onClick={() => setDisplayModalObs(true)} className="p-mr-2" />
+            <Dialog header="Observação Item" visible={displayModalObs} onHide={()=>setDisplayModalObs(false)}>     
+            <div>
+                <InputTextarea rows={2} cols={50} value={observacaoItem} onChange={(e) => setObservacaoItem(e.target.value)} />
+            </div>
+            </Dialog>
             <Button label="Alterar" onClick={handleSubmit}/>
         </div>
 

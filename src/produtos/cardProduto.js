@@ -9,6 +9,7 @@ import  usePeriodos, {useLocalStorage } from '../requests/greenHooks.js'
 import axios from 'axios'
 import 'primeflex/primeflex.css';
 import  {api_address }  from '../proxy/proxy.js'
+import { InputTextarea } from 'primereact/inputtextarea';
 
 
 
@@ -51,7 +52,7 @@ return (
                         </div>
                         <div className="p-col-fixed" style={{ width: '500px'}}>
                             <TableProds isBarcode={props.isBarCode} onSave={onHide} produto={props.produto}></TableProds>
-                        </div>  
+                        </div>
                     </div>
 
                 </Dialog>
@@ -80,6 +81,8 @@ function TableProds(props) {
     const [token,setToken] = useLocalStorage("token",null)
     const [clienteId, ] = useLocalStorage("clienteId",null)
     const [carrinhoId,setCarrinhoId ] = useLocalStorage("carrinhoId",null)
+    const [displayModalObs, setDisplayModalObs] = useState(false)
+    const [observacaoItem, setObservacaoItem] = useState("")
     const message = useRef(null)
     const {
         dadosPeriodo,
@@ -124,6 +127,7 @@ function TableProds(props) {
             "qtd_total":qtd_total,
             "clienteId":clienteId,
             "carrinhoId":carrinhoId,
+            "observacao_item":observacaoItem
         }
         var config = {
             headers:{'Authorization': 'Token '+token}
@@ -139,7 +143,7 @@ function TableProds(props) {
                     // message.current.show([
                     //     { severity: 'success', summary: response.data['message'], sticky: true }
                     // ])
-                    setCarrinhoId(response.data['carrinhoId'])       
+                    setCarrinhoId(response.data['carrinhoId'])    
                 }else{
                     message.current.show([
                         { severity: 'error', summary: response.data['message'], sticky: true }
@@ -168,6 +172,12 @@ function TableProds(props) {
                 {renderTamanhosGrid(props)}
             </div>
             {linhasDados}
+            <Button label="Observação" onClick={() => setDisplayModalObs(true)} className="p-mr-2" />
+            <Dialog header="Observação Item" visible={displayModalObs} onHide={()=>setDisplayModalObs(false)}>     
+            <div>
+                <InputTextarea rows={2} cols={50} value={observacaoItem} onChange={(e) => setObservacaoItem(e.target.value)} />
+            </div>
+            </Dialog>
             <Button label="Adicionar" onClick={handleSubmit}/>
         </div>
 
