@@ -75,6 +75,29 @@ const Pedidos = () => {
           })
     }
 
+
+    const visualizar_pedido = (carrrinhoId,id,nome) =>{
+        axios({
+            method: 'GET',
+            url: api_address+'/pedidos/retoma/'+carrrinhoId+'/',
+            headers: {'Authorization': 'Token '+token},
+            params:{
+                carrinhoAtualId:carrinhoAtualId
+              },
+          }).then(res => {
+            if(res.data['confirmed']){
+                setCarrinhoId(carrrinhoId)
+                setClienteId(id)
+                setClienteNome(nome)
+                window.location.href = '/carrinho'
+            }else{
+                message.current.show([
+                    { severity: 'error', summary: res.data['message'], sticky: false }
+                ])
+            }
+          })
+    }
+
     const processar = (rowData) =>{
         setDisplayModal(true)
 
@@ -98,7 +121,7 @@ const Pedidos = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                {rowData.liberado_rep ? <></>  : <Button label="Alterar" onClick={() => confirma_alteracao(rowData)} />}
+                {rowData.liberado_rep ? <Button label="Visualizar" onClick={() => window.location.href = '/pedido/'+rowData.id} />  : <Button label="Alterar" onClick={() => confirma_alteracao(rowData)} />}
                 {rowData.liberado_rep  ? <></>  : rowData.liberado_cliente && isRep ? <Button label="Processar" onClick={() => processar(rowData)} /> : <></>}
             </React.Fragment>
         );

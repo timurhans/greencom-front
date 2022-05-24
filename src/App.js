@@ -7,6 +7,7 @@ import Promocoes from './menu-home/promocoes.js'
 import Conta from './menu-home/conta.js'
 import Produtos from './produtos/produtos.js'
 import Carrinho from './carrinho/carrinho.js'
+import Pedido from './pedido/pedido.js'
 import DataTableBasicDemo from './tests/dataTableDemo.js'
 
 import React from "react";
@@ -58,6 +59,7 @@ class App extends React.Component {
                   <Route path="/carrinho" component={Carrinho} />
                   <Route path="/busca" component={Produtos} />
                   <Route path="/teste" component={DataTableBasicDemo} />
+                  <Route path="/pedido/:idPedido" component={Pedido} />
                   <Route path="/:linha/:categoria/:subcategoria">
                     {loggedIn ? <Produtos />  :  <Redirect to="/login"/>}
                   </Route>                  
