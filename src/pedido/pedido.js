@@ -7,6 +7,9 @@ import { Card } from 'primereact/card';
 import CardItemPedido from './cardItemPedido.js'
 import axios from 'axios'
 import  {api_address }  from '../proxy/proxy.js'
+import { Button } from 'primereact/button';
+import { Chip } from 'primereact/chip';
+import { formatMoney } from '../utils/utils.js';
 
 
 export default function Pedido() {
@@ -67,8 +70,14 @@ export default function Pedido() {
   return (
     <>
     <p>{emptyMessage}</p>
+    <Chip label={"Cliente: "+razaoSocial} />
+    <Chip label={"Quantidade Total: "+qtdTotal} />
+    <Chip label={"Valor Total: "+formatMoney(valorTotal)} />
+    {/* <Button className="p-button-secondary" label={"Cliente: "+razaoSocial} disabled />
+    <Button className="p-button-secondary" label={"Valor Total: "+formatMoney(valorTotal)} disabled />
+    <Button className="p-button-secondary" label={"Quantidade Total: "+qtdTotal} disabled />  */}
     
-    <p>{"Cliente: "+razaoSocial + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p>
+    {/* <p>{"Cliente: "+razaoSocial + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p> */}
     <div className="p-grid">{listItems}</div>
     </>
   )
@@ -83,8 +92,10 @@ function CardPeriodo(props){
     </div>)
 
   return (
-    <Card title={props.periodoAtual+" - "+props.qtd_periodo+" - "+props.valor_periodo}>
-      <div className="p-grid">
+    <Card title={props.periodoAtual}>
+    <p>{"Quantidade Periodo: "+props.qtd_periodo + " | Valor Periodo: "+ formatMoney(props.valor_periodo)}</p>
+    <div className="p-grid">
+
     {listItemsProv}
     </div>
   </Card>

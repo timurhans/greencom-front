@@ -13,6 +13,8 @@ import { InputSwitch } from 'primereact/inputswitch';
 import  {api_address }  from '../proxy/proxy.js'
 import { ToggleButton } from 'primereact/togglebutton';
 import { SelectButton } from 'primereact/selectbutton';
+import { formatMoney } from '../utils/utils.js';
+import { Chip } from 'primereact/chip';
 
 
 
@@ -26,7 +28,7 @@ export default function Carrinho() {
   const [token,setToken] = useLocalStorage("token",null)
   const [isRep,setIsRep ] = useLocalStorage("isRep",null)
   const [displayModal, setDisplayModal] = useState(false)
-  const [tipoPedido, setTipoPedido] = useState("Teste")
+  const [tipoPedido, setTipoPedido] = useState("Real")
   const [tipoConta,] = useLocalStorage("tipoConta",null)
 
   const {
@@ -117,15 +119,17 @@ export default function Carrinho() {
     <>
     <p>{emptyMessage}</p>
     
-    <p>{"Cliente: "+razaoSocial + " | Valor Total: "+valorTotal+ " | Quantidade Total: "+qtdTotal}</p>
-    <Button label="Salvar" onClick={() => setDisplayModal(true)} className="p-mr-2" />
+    <Chip label={"Cliente: "+razaoSocial} />
+    <Chip label={"Quantidade Total: "+qtdTotal} />
+    <Chip label={"Valor Total: "+formatMoney(valorTotal)} />
+    <Button label="Salvar" onClick={() => setDisplayModal(true)} className="p-button-rounded p-mr-2" />
     <Dialog header="Observacoes" visible={displayModal} onHide={()=>setDisplayModal(false)}>     
       <div>
           <InputTextarea rows={10} cols={50} value={observacoesNovo} onChange={(e) => setObservacoesNovo(e.target.value)} />
       </div>
-      <div>
+      {/* <div>
          <SelectButton value={tipoPedido} className="p-d-block p-mx-auto p-mt-2" options={["Teste","Real"]} onChange={(e) => setTipoPedido(e.value)} />
-      </div>
+      </div> */}
       <div>
         <Button label="Salvar" className="p-d-block p-mx-auto p-mt-2" onClick={() => handleSave()} />
       </div>
@@ -148,9 +152,10 @@ function CardPeriodo(props){
     </div>)
 
   return (
-    <Card title={props.periodoAtual+" - "+props.qtd_periodo+" - "+props.valor_periodo}>
-      <div className="p-grid">
-    {listItemsProv}
+    <Card title={props.periodoAtual}>
+      <p>{"Quantidade Periodo: "+props.qtd_periodo + " | Valor Periodo: "+ formatMoney(props.valor_periodo)}</p>
+    <div className="p-grid">
+      {listItemsProv}
     </div>
   </Card>
   )

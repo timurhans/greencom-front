@@ -11,6 +11,7 @@ import axios from 'axios'
 import { confirmDialog } from 'primereact/confirmdialog'
 import 'primeflex/primeflex.css';
 import  {api_address }  from '../proxy/proxy.js'
+import { formatMoney } from '../utils/utils.js';
 
 export default function CardCarrinho(props) {
     const [displayModal, setDisplayModal] = useState(false)
@@ -46,9 +47,9 @@ export default function CardCarrinho(props) {
     const preco_desc = props.produto.preco-props.produto.desconto
     const preco_normal =  props.produto.preco//colocar linha cortando text
     const header = <div>
-        <h3>{props.produto.produto__descricao}</h3>
-        <p>{props.produto.produto__produto+" - "+props.produto.qtd_item +" - R$"+ props.produto.valor_item}</p>
-        {props.produto.desconto>0 ?  <p>{"Preço: De R$"+preco_normal +" por R$"+ preco_desc}</p>  : <p>{"Preço: R$"+ props.produto.preco}</p>  }
+        <h4>{props.produto.produto__descricao + " - " + props.produto.produto__produto}</h4>
+        <p>{"Qtd: "+props.produto.qtd_item +" | Valor: "+ formatMoney(props.produto.valor_item) }</p>
+        {props.produto.desconto>0 ?  <p>{"Preço: De "+formatMoney(preco_normal) +" por R$"+ formatMoney(preco_desc)}</p>  : <p>{"Preço: "+ formatMoney(props.produto.preco)}</p>  }
         </div>
 
     return (

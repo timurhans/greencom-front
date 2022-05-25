@@ -10,6 +10,8 @@ import axios from 'axios'
 import 'primeflex/primeflex.css';
 import  {api_address }  from '../proxy/proxy.js'
 import { InputTextarea } from 'primereact/inputtextarea';
+import { formatMoney } from '../utils/utils.js';
+import { Chip } from 'primereact/chip';
 
 
 
@@ -35,8 +37,9 @@ export default function CardProduto(props) {
         desconto = ""
     }
     const header = <div>
-        <h3>{props.produto.produto__descricao}</h3>
-        <p>{props.produto.produto__produto +" - R$"+ props.produto.preco+desconto}</p>
+        <h4>{props.produto.produto__descricao}</h4>
+        <p>{props.produto.produto__produto}</p>
+        <Chip label={formatMoney(props.produto.preco)+desconto} />
         </div>
 return (
     <div className="p-shadow-2 p-m-2">
@@ -163,7 +166,7 @@ function TableProds(props) {
     return (
         <div>
             <Messages ref={message} />
-            <Dropdown id="dropdown" value={periodo} options={JSON.parse(props.produto.produto__periodos)}
+            <Dropdown placeholder="Selecione Período" id="dropdown" value={periodo} options={JSON.parse(props.produto.produto__periodos)}
             onChange={(e) => setPeriodo(e.value)}
             />
             <div className="p-grid">
