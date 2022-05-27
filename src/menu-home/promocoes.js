@@ -13,6 +13,7 @@ const Promocoes = () => {
     const [carrinhoId, setCarrinhoId] = useLocalStorage("carrinhoId",null)
     const message = useRef(null)
     const [promocoes,setPromocoes] = useState([])
+    const [clienteId, ] = useLocalStorage("clienteId",null)
 
   
     useEffect(() => {
@@ -53,7 +54,10 @@ const Promocoes = () => {
     }
 
     const getPromocoes = () =>{
-        let url = api_address+'/promocoes/'
+        let url = api_address+'/promocoes'
+        if(clienteId != null){
+            url = url +'/'+ clienteId
+        }
         axios({
             method: 'GET',
             headers:{'Authorization': 'Token '+token},
@@ -69,7 +73,7 @@ const Promocoes = () => {
     const actionBodyTemplate = (rowData) => {
         const elems = rowData.condicoes.slice()
         let elems_html = elems.map((val,index) =>
-        <Button className="p-mr-2" label={rowData.tipo_condicao+" - "+val.condicao} onClick={() => computaPromo(rowData.id_promocao,val.id)} />)
+        <Button className="p-mr-2" label={"Minimo - "+val.condicao} onClick={() => computaPromo(rowData.id_promocao,val.id)} />)
         return (
             <React.Fragment>
                 {elems_html}

@@ -30,6 +30,7 @@ export default function CardItemPedido(props) {
     const header = <div>
         <h4>{props.produto.produto__descricao + " - " + props.produto.produto__produto}</h4>
         <p>{"Qtd: "+props.produto.qtd_item +" | Valor: "+ formatMoney(props.produto.valor_item) }</p>
+        <p>{"Qtd Entregar: "+props.produto.qtd_item_entregar}</p>
         {props.produto.desconto>0 ?  <Chip label={"Preço: De "+formatMoney(preco_normal)+" por R$"+ formatMoney(preco_desc)} />  : <Chip label={"Preço: "+ formatMoney(props.produto.preco)} />  }
         </div>
 
@@ -68,27 +69,17 @@ function TableProds(props) {
     const [periodo, ] = useState(props.periodoAtual)
     const [pedido, setPedido] = useState({})
     const message = useRef(null)
-    const [linhasDados, setLinhasDados] = useState(<div></div>)
-    const [clienteId, ] = useLocalStorage("clienteId",null)
-    const [carrinhoId, ] = useLocalStorage("carrinhoId",null)
-    const [observacaoItem, setObservacaoItem] = useState(props.produto.observacao_item)
-    const [token,] = useLocalStorage("token",null)
-    
-    const {
-        dadosPeriodo,
-      } = UsePeriodos(produto.produto__produto,periodo)
-    
-      useEffect(() => {
-        let [order,has_message] = calculatePedido(dadosPeriodo,produto)
-        setPedido(order)    
-      }, [dadosPeriodo])
+    const [linhasDados, setLinhasDados] = useState(<div></div>)    
 
       useEffect(() => {
+          let map_list = calculatePedido(produto)
+          let pedido = JSON.parse(produto.qtds)
         if (periodo !== ''){
-            let tams = dadosPeriodo.map((val) => <LinhaDados dados={val} pedido={pedido} setPedido={setPedido}></LinhaDados>)
+            console.log(pedido)
+            let tams = map_list.map((val) => <LinhaDados dados={val} pedido={pedido}></LinhaDados>)
             setLinhasDados(tams)
         }
-      }, [pedido])  
+      }, [])  
 
 
 
@@ -97,13 +88,11 @@ function TableProds(props) {
         let tams = prods_tams.map((val) => <div className="p-col-1">{val}</div>)
         return tams
     }
-
         
     return (
         <div>
             <Messages ref={message} />
             <div className="p-grid">
-                <div className="p-col">TIPO</div>
                 <div className="p-col">COR</div>
                 {renderTamanhosGrid()}
             </div>
@@ -114,12 +103,6 @@ function TableProds(props) {
 }
 
 function LinhaDados(props){
-
-    const handleChange = (valor,props,ordem) => {
-        let ped_prov = props.pedido
-        ped_prov[props.dados.cor][ordem] = valor
-        props.setPedido(ped_prov)
-    }
 
     const renderButtons = (props) => {
         let elems = []
@@ -133,10 +116,9 @@ function LinhaDados(props){
             elems.push(
             <div className="p-col-1 p-mt-4">
                     <InputNumber min={0} id={props.dados.cor+i} disabled={true}
-                    value={props.pedido[props.dados.cor][i]} onValueChange={(e) => handleChange(e.value,props,i)} mode="decimal" showButtons buttonLayout="vertical"
+                    value={props.pedido[props.dados.cor][i]} mode="decimal" showButtons buttonLayout="vertical"
                     style={{width: '2.5em'}} decrementButtonClassName="p-button-secondary"
                     incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
-
             </div>
             )
         
@@ -146,8 +128,7 @@ function LinhaDados(props){
  
     return (
         <div className="p-grid">
-            <div className="p-col">{props.dados.desc_liberacao}</div>
-            <div className="p-col">{props.dados.cor+" - "+props.dados.desc_cor}</div>
+            <div className="p-col">{props.dados.cor}</div>
             {renderButtons(props)}
 
         </div>
@@ -156,40 +137,17 @@ function LinhaDados(props){
 }
 
 
-function validaQtdsPedido(qtdAtual,qtdMaxima){
-    let qtds = []
-    let item_has_message = false
-    for (var i in qtdAtual){
-        let dif = qtdMaxima[i]-qtdAtual[i]
-        if (dif<0){
-            qtds.push(qtdMaxima[i])
-            item_has_message = true
-        }else{
-            qtds.push(qtdAtual[i])
-        }
-        
-    }
-    return [qtds,item_has_message]
-}
 
-function calculatePedido(dadosPeriodo,produto){
+function calculatePedido(produto){
     let order = {}
     let orderAtual = JSON.parse(produto.qtds)
-    let has_message = false
-    for (var index in dadosPeriodo){
-        let item = dadosPeriodo[index]
-        let cor = item['cor']
-        let qtds = new Array(produto.produto__qtd_tamanhos).fill(0)
-        if(cor in orderAtual){
-            if(item['liberacao']){
-                qtds = orderAtual[cor]               
-            }else{
-                let [qtds_x,item_has_message] = validaQtdsPedido(orderAtual[cor],item['qtds'])
-                qtds = qtds_x
-                if (item_has_message) has_message=true
-            }                
-        }
-        order[cor] = qtds
+    order = []
+    for(var key in orderAtual){
+        let order_item = {}
+        order_item['cor'] = key
+        order_item['qtds'] = orderAtual[key]
+        order.push(order_item)
     }
-    return [order,has_message]
+    return order
 }
+

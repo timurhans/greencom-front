@@ -21,6 +21,8 @@ export default function Pedido() {
   const [emptyMessage,setEmptyMessage ] = useState(null)
   const [valorTotal,setValorTotal ] = useState(null)
   const [qtdTotal,setQtdTotal ] = useState(null)
+  const [valorTotalEntregar,setValorTotalEntregar ] = useState(null)
+  const [qtdTotalEntregar,setQtdTotalEntregar ] = useState(null)
   const [razaoSocial,setRazaoSocial ] = useState(null)
 
   useEffect(() => {
@@ -43,6 +45,8 @@ export default function Pedido() {
         setEmptyMessage(res.data['message'])
         setValorTotal(res.data['valor_total'])
         setQtdTotal(res.data['qtd_total'])
+        setValorTotalEntregar(res.data['valor_total_entregar'])
+        setQtdTotalEntregar(res.data['qtd_total_entregar'])
       }
 
       console.log(res.data['dados'])
@@ -59,8 +63,9 @@ export default function Pedido() {
     if (lista.length>0){
       listItemsProv = lista.map((val,index) => 
       <div className="p-col-12 p-md-12 p-lg-12">
-        <CardPeriodo periodoAtual={val.periodo} qtd_periodo={val.qtd_periodo}
-        valor_periodo={val.valor_periodo} itens={val.itens} key={index}></CardPeriodo>
+        <CardPeriodo periodoAtual={val.periodo} qtd_periodo={val.qtd_periodo} valor_periodo={val.valor_periodo}
+        qtd_periodo_entregar={val.qtd_periodo_entregar} valor_periodo_entregar={val.valor_periodo_entregar}
+        itens={val.itens} key={index}></CardPeriodo>
         </div>)
     }
     setListItems(listItemsProv)
@@ -72,7 +77,9 @@ export default function Pedido() {
     <p>{emptyMessage}</p>
     <Chip label={"Cliente: "+razaoSocial} />
     <Chip label={"Quantidade Total: "+qtdTotal} />
+    <Chip label={"Quantidade a Total Entregar: "+qtdTotalEntregar} />
     <Chip label={"Valor Total: "+formatMoney(valorTotal)} />
+    <Chip label={"Valor Total a Entregar: "+formatMoney(valorTotalEntregar)} />
     {/* <Button className="p-button-secondary" label={"Cliente: "+razaoSocial} disabled />
     <Button className="p-button-secondary" label={"Valor Total: "+formatMoney(valorTotal)} disabled />
     <Button className="p-button-secondary" label={"Quantidade Total: "+qtdTotal} disabled />  */}
@@ -85,6 +92,7 @@ export default function Pedido() {
 
 
 function CardPeriodo(props){
+  console.log(props)
   const lista = props.itens.slice()
   let listItemsProv = <div className="p-col-12 p-md-6 p-lg-3">Entrou</div>
   listItemsProv = lista.map((val,index) => <div className="p-col-6 p-md-6 p-lg-2">
@@ -94,6 +102,7 @@ function CardPeriodo(props){
   return (
     <Card title={props.periodoAtual}>
     <p>{"Quantidade Periodo: "+props.qtd_periodo + " | Valor Periodo: "+ formatMoney(props.valor_periodo)}</p>
+    <p>{"Quantidade Periodo a Entregar: "+props.qtd_periodo_entregar + " | Valor Periodo a Entregar: "+ formatMoney(props.valor_periodo_entregar)}</p>
     <div className="p-grid">
 
     {listItemsProv}

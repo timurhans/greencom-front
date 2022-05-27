@@ -147,6 +147,9 @@ const Pedidos = () => {
     const valorTotalTemplate = (rowData) => {
         return `${formatCurrency(rowData.valor_total)}`;
     }
+    const valorTotalEntregarTemplate = (rowData) => {
+        return `${formatCurrency(rowData.valor_total_entregar)}`;
+    }
 
     const dateTemplate = (rowData) => {
         if(rowData.data_liberacao == null){
@@ -165,13 +168,13 @@ const Pedidos = () => {
                     <Column field="cliente__razao_social" header="Razao Social" filter filterPlaceholder="Buscar"></Column>
                     <Column field="colecao" header="Colecao" filter filterPlaceholder="Buscar"></Column>
                     <Column header="Valor" body={valorTotalTemplate}></Column>
+                    <Column header="Valor Entregar" body={valorTotalEntregarTemplate}></Column>
                     <Column field="qtd_total" header="Qtd"></Column>
                     <Column field="cliente__desc_cond_pag" header="Cond Pag"></Column>
                     <Column body={dateTemplate} header="Data"></Column>
                     <Column field="liberado_rep" header="Liberado" body={liberado_template}></Column>
                     <Column field="enviado_fabrica" header="Enviado" body={enviado_template}></Column>
                     <Column field="codigo_erp" header="ID Ondas"></Column>
-                    <Column header="Teste" body={is_teste_template}></Column>
                     <Column header="Acoes" body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
