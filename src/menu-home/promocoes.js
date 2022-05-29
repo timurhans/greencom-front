@@ -32,9 +32,17 @@ const Promocoes = () => {
                 id_condicao:id_condicao
               }
         }).then(res => {
-            message.current.show([
-                { severity: 'success', summary: "Promoção computada com sucesso", sticky: false }
-            ])
+            console.log(res)
+            if(res['data']['confirmed']){
+                message.current.show([
+                    { severity: 'success', summary: res['data']['message'], sticky: false }
+                ])
+            }else{
+                message.current.show([
+                    { severity: 'error', summary: res['data']['message'], sticky: false }
+                ])                
+            }
+
         })
 
     }
@@ -73,7 +81,7 @@ const Promocoes = () => {
     const actionBodyTemplate = (rowData) => {
         const elems = rowData.condicoes.slice()
         let elems_html = elems.map((val,index) =>
-        <Button className="p-mr-2" label={"Minimo - "+val.condicao} onClick={() => computaPromo(rowData.id_promocao,val.id)} />)
+        <Button className="p-mr-2" label={val.desc_condicao} onClick={() => computaPromo(rowData.id_promocao,val.id)} />)
         return (
             <React.Fragment>
                 {elems_html}
@@ -85,9 +93,9 @@ const Promocoes = () => {
         <div>
             <Messages ref={message} />
             <div className="card">
-                <DataTable value={promocoes}>
-                    <Column field="descricao" header="Promocao"></Column>
-                    <Column header="Acoes" body={actionBodyTemplate}></Column>
+                <DataTable value={promocoes} resizableColumns columnResizeMode="fit">
+                    <Column field="descricao" header="Promocao" style={{width:'15%'}}></Column>
+                    <Column header="Acoes" body={actionBodyTemplate} style={{width:'85%'}}></Column>
                 </DataTable>
             </div>
             <Button className="p-d-block p-mx-auto p-mt-6" label={"Remover Promoções"} onClick={() => removePromo()} />
