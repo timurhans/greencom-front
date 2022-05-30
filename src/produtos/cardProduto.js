@@ -17,7 +17,6 @@ import { Chip } from 'primereact/chip';
 
 export default function CardProduto(props) {
     const [displayModal, setDisplayModal] = useState(false)
-    console.log(props.isBarCode)
 
     useEffect(() => {
         setDisplayModal(props.isBarCode)
