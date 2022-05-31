@@ -10,7 +10,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
 
 
-const Trade = () => {
+const SolicitacaoTrade = () => {
     const [token,setToken] = useLocalStorage("token",null)
     const [materials, setMaterials] = useState([]);
     const [clientes, setClientes] = useState([]);
@@ -167,5 +167,5 @@ const Trade = () => {
     );
 }
 
-export {Trade}
+export {SolicitacaoTrade}
      

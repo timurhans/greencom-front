@@ -8,7 +8,8 @@ import Conta from './menu-home/conta.js'
 import Produtos from './produtos/produtos.js'
 import Carrinho from './carrinho/carrinho.js'
 import Pedido from './pedido/pedido.js'
-import {Trade} from './trade/trade.js'
+import {SolicitacaoTrade} from './trade/solicitacaoTrade.js'
+import Solicitacoes from './trade/solicitacoesTrade.js'
 import DataTableBasicDemo from './tests/dataTableDemo.js'
 
 import React from "react";
@@ -58,7 +59,8 @@ class App extends React.Component {
                   <Route path="/promocoes" component={Promocoes} />
                   <Route path="/conta" component={Conta} />
                   <Route path="/carrinho" component={Carrinho} />
-                  <Route path="/trade" component={Trade} />
+                  <Route path="/trade/solicitacao" component={SolicitacaoTrade} />
+                  <Route path="/trade" component={Solicitacoes} />
                   <Route path="/busca" component={Produtos} />
                   <Route path="/teste" component={DataTableBasicDemo} />
                   <Route path="/pedido/:idPedido" component={Pedido} />

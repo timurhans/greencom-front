@@ -19,21 +19,26 @@ const MenuPerfil = () => {
             },
             {
                 label: 'Pedidos',
-                icon: 'pi pi-upload',
+                icon: 'pi pi-book',
                 url: '/pedidos'
             },
 
         ]
         if (isRep){
             items_perfil.push({
+                label: 'Clientes',
+                icon: 'pi pi-users',
+                url: '/clientes'
+            })
+            items_perfil.push({
                 label: 'Promocoes',
-                icon: 'pi pi-external-link',
+                icon: 'pi pi-percentage',
                 url: '/promocoes'
             })
             items_perfil.push({
-                label: 'Clientes',
-                icon: 'pi pi-external-link',
-                url: '/clientes'
+                label: 'Trade',
+                icon: 'pi pi-flag',
+                url: '/trade'
             })
 
         }    
@@ -49,7 +54,7 @@ const MenuPerfil = () => {
     return (
         <>
             <Menu model={items} popup ref={menu} id="popup_menu" />
-            <Button icon="pi pi-user" onClick={(event) => menu.current.toggle(event)} aria-controls="popup_menu" aria-haspopup />
+            <Button icon="pi pi-bars" onClick={(event) => menu.current.toggle(event)} aria-controls="popup_menu" aria-haspopup />
         </>
     );
 }
