@@ -53,7 +53,7 @@ return (
                             <img top width="100%" src={props.produto.produto__url_imagem} alt="Sem Imagem" />
                         </div>
                         <div className="p-col-fixed" style={{ width: '500px'}}>
-                            <TableProds isBarcode={props.isBarCode} onSave={onHide} produto={props.produto}></TableProds>
+                            <TableProds isBarcode={props.isBarCode} searchInput={props.searchInput} onSave={onHide} produto={props.produto}></TableProds>
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@ function TableProds(props) {
                 { severity: 'error', summary: "Quantidade deve ser maior que 0", sticky: false }
             ])            
         }
-
+        props.searchInput.current.focus()
     }
         
     return (

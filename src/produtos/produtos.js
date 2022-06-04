@@ -9,7 +9,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 
 
-export default function Produtos() {
+export default function Produtos(props) {
 
   const [listItems,setListItems] = useState(<div></div>)  
   const [first, setFirst] = useState(0)
@@ -61,7 +61,7 @@ export default function Produtos() {
       const lista = produtos['lista'].slice(first,first+rows)
       let listItemsProv = <div className={classColuna}>Entrou</div>
       listItemsProv = lista.map((val,index) => <div className={classColuna}><CardProduto
-       produto={val} isBarCode={isBarCode} key={index}></CardProduto></div>)
+       produto={val} isBarCode={isBarCode} key={index} searchInput={props.searchInput}></CardProduto></div>)
       setListItems(listItemsProv)
       window.scrollTo(0, 0)
     }

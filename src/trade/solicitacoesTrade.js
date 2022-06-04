@@ -63,10 +63,28 @@ const Solicitacoes = () => {
     return (
         <>
         <Dialog header={"Detalhes Solicitacao"} visible={displayModal} style={{ width: '75vw' }} onHide={() => setDisplayModal(false)}>
-        <h5>Observacoes</h5>
-        <InputTextarea value={solicitacao.observacoes} rows={5} cols={30} disabled />
-        <Carousel value={solicitacao.imagens} numVisible={3} numScroll={1} circular
-            itemTemplate={imagensSolicitacaoTemplate} header={<h5>Imagens</h5>} />
+            <div className="p-grid">
+                <div className="p-col-6">
+                    <h4 >Material: {solicitacao.material}</h4>
+                    <div className="card">
+                        <div className="p-grid">
+                        <div className="p-col-12">
+                            <img src={`https://ondasstr092020.blob.core.windows.net/greencom/${solicitacao.material_opcao_imagem}`}
+                                style={{ height: '200px'}}  alt={"escolher"} className="product-image" />
+                            </div>
+                        </div>
+                        <div className="p-col-12">
+                            <p >{solicitacao.material_descricao_longa}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-col-6">
+                </div>
+            </div>
+            <h5>Observacoes</h5>
+            <InputTextarea value={solicitacao.observacoes} rows={5} cols={30} disabled />
+            <Carousel value={solicitacao.imagens} numVisible={3} numScroll={1} circular
+                itemTemplate={imagensSolicitacaoTemplate} header={<h5>Imagens</h5>} />
         </Dialog>
 
         <div>

@@ -8,6 +8,7 @@ import { useCartSearch,useLocalStorage } from '../requests/greenHooks.js'
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
+import 'primeflex/primeflex.css';
 
 
 const SolicitacaoTrade = () => {
@@ -17,7 +18,8 @@ const SolicitacaoTrade = () => {
     const [cliente, setCliente] = useState(null);
     const [materialEscolhido, setMaterialEscolhido] = useState({});
     const [materialOpcaoEscolhido, setMaterialOpcaoEscolhido] = useState({});
-    const [displayModal, setDisplayModal] = useState(false)
+    const [displayModalOpcao, setDisplayModalOpcao] = useState(false)
+    const [displayModalMaterial, setDisplayModalMaterial] = useState(false)
     const [observacoes,setObservacoes] = useState("")
     const responsiveOptions = [
         {
@@ -86,12 +88,13 @@ const SolicitacaoTrade = () => {
 
     const setMaterial = (material) => {
         setMaterialEscolhido(material)
-        setDisplayModal(true)
+        setDisplayModalOpcao(true)
     }
 
     const setMaterialOpcao = (materialOpcao) => {
         setMaterialOpcaoEscolhido(materialOpcao)
-        setDisplayModal(false)
+        setDisplayModalOpcao(false)
+        setDisplayModalMaterial(false)
     }
 
     const materialTemplate = (material) => {
@@ -105,7 +108,7 @@ const SolicitacaoTrade = () => {
                         <h4 className="mb-1">{material.descricao}</h4>
                         <h6 className="mt-0 mb-3">{material.descricao_longa}</h6>
                         <div className="car-buttons mt-5">
-                            <Button icon="pi pi-search" onClick={() => setMaterial(material)} className="p-button p-button-rounded mr-2" />
+                            <Button icon="pi pi-pencil" onClick={() => setMaterial(material)} className="p-button p-button-rounded mr-2" />
                         </div>
                     </div>
                 </div>
@@ -125,7 +128,7 @@ const SolicitacaoTrade = () => {
                         <h6 className="mt-0 mb-3">{`Prazo de Envio: ${materialOpcao.prazo_envio} dias`}</h6>
                         {/* <h6 className="mt-0 mb-3">{materialOpcao.descricao_longa}</h6> */}
                         <div className="car-buttons mt-5">
-                            <Button icon="pi pi-search" className="p-button p-button-rounded mr-2" onClick={() => setMaterialOpcao(materialOpcao)}   />
+                            <Button icon="pi pi-pencil" className="p-button p-button-rounded mr-2" onClick={() => setMaterialOpcao(materialOpcao)}   />
                         </div>
                     </div>
                 </div>
@@ -136,32 +139,77 @@ const SolicitacaoTrade = () => {
     return (
 
         <>
-            <Dropdown placeholder="Selecione Cliente" id="dropdown" value={cliente} options={clientes}
-            onChange={(e) => setCliente(e.value) } optionLabel="nome" //optionValue="id"
-            />
-            <InputTextarea rows={3} cols={200} value={observacoes} onChange={(e) => setObservacoes(e.target.value)} />
 
-        <Dialog header={"Escolha opcao de material"} maximizable visible={displayModal} style={{ width: '75vw' }} onHide={() => setDisplayModal(false)}>
-            <div className="carousel-demo">
-
+        <div className="p-grid">
+            <div className="p-col-12">
+                <h4>Cliente</h4>
+                <Dropdown placeholder="Selecione Cliente" id="dropdown" value={cliente} options={clientes}
+                    onChange={(e) => setCliente(e.value) } optionLabel="nome"/>
+            </div>
+            <div className="p-col-6">
+                <h4 >Material: {materialEscolhido.descricao}</h4>
                 <div className="card">
-                    <Carousel value={materialEscolhido.opcoes} numVisible={3} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular
-                        itemTemplate={materialOpcaoTemplate} />
+                    <div className="p-grid">
+                    <div className="p-col-12">
+                        <img src={`https://ondasstr092020.blob.core.windows.net/greencom/${materialOpcaoEscolhido.imagem_material_opcao}`}
+                            style={{ height: '200px'}}  alt={"escolher"} className="product-image" />
+                        </div>
+                    </div>
+                    <div className="p-col-12">
+                        <p >{materialEscolhido.descricao_longa}</p>
+                    </div>
                 </div>
             </div>
-
-        </Dialog>
-        <div className="carousel-demo">
-
-            <div className="card">
-                <Carousel value={materials} numVisible={2} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular
-                    itemTemplate={materialTemplate} header={<h5>Teste</h5>} />
+            <div className="p-col-6">
+            </div>
+            <div className="p-col-3">
+            {materialOpcaoEscolhido.descricao_opcao==null ?
+             <Button label="Escolher Material"  onClick={() => setDisplayModalMaterial(true)} /> 
+              :
+               <Button label="Alterar Material"  onClick={() => setDisplayModalMaterial(true)} />
+            }
+            </div>
+            <div className="p-col-9">
+            </div>
+            <div className="p-col-12">
+                <h4 >Observacoes</h4>
+                <InputTextarea rows={5} cols={100} value={observacoes} onChange={(e) => setObservacoes(e.target.value)} />
             </div>
         </div>
 
+
+            
+
+
+            <Dialog header={"Escolha material"}  visible={displayModalMaterial} style={{ width: '75vw' }} onHide={() => setDisplayModalMaterial(false)}>
+                <div className="carousel-demo">
+
+                    <div className="card">
+                        <Carousel value={materials} numVisible={2} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular
+                            itemTemplate={materialTemplate} header={<h5>Teste</h5>} />
+                    </div>
+                </div>
+
+            </Dialog>
+
+
+            <Dialog header={"Escolha opcao de material"}  visible={displayModalOpcao} style={{ width: '75vw' }} onHide={() => setDisplayModalOpcao(false)}>
+                <div className="carousel-demo">
+
+                    <div className="card">
+                        <Carousel value={materialEscolhido.opcoes} numVisible={3} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular
+                            itemTemplate={materialOpcaoTemplate} />
+                    </div>
+                </div>
+
+            </Dialog>
+
+
+
+
         
 
-        <Button label="Salvar" className="p-d-block p-mx-auto p-mt-2" onClick={() => handleSave()} />
+            <Button label="Salvar" className="p-d-block p-mx-auto p-mt-2" onClick={() => handleSave()} />
 
         </>
     );

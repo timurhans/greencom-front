@@ -91,7 +91,7 @@ export function MyMenu(props){
     if(props.loggedIn){
         
         end = <> 
-        <InputText onChange={handleChangeSearch} placeholder="Buscar" type="text" />
+        <InputText ref={props.searchInput} onChange={handleChangeSearch} placeholder="Buscar" type="text" />
         <Button onClick={handleSearch} icon="pi pi-search" className="p-button-rounded p-button-secondary" />
         <Button icon="pi pi-shopping-cart" onClick={(e) => window.location.href="/carrinho"} aria-controls="popup_menu" aria-haspopup />
         {tipoConta==="visitante" ? <Button icon="pi pi-user" onClick={(e) => window.location.href="/conta"} aria-controls="popup_menu" aria-haspopup /> : <MenuPerfil></MenuPerfil> }
