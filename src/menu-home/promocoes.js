@@ -66,10 +66,15 @@ const Promocoes = () => {
         if(clienteId != null){
             url = url +'/'+ clienteId
         }
+        let params = {}
+        if(carrinhoId != null){
+            params['carrinhoId'] = carrinhoId
+        }
         axios({
             method: 'GET',
             headers:{'Authorization': 'Token '+token},
             url: url,
+            params:params
         }).then(res => {
             setPromocoes(res.data['promocoes'])
             console.log(res.data['promocoes'])
@@ -95,6 +100,7 @@ const Promocoes = () => {
             <div className="card">
                 <DataTable value={promocoes} resizableColumns columnResizeMode="fit">
                     <Column field="descricao" header="Promocao" style={{width:'15%'}}></Column>
+                    <Column field="atingido" header="Atingido" style={{width:'10%'}}></Column>
                     <Column header="Acoes" body={actionBodyTemplate} style={{width:'85%'}}></Column>
                 </DataTable>
             </div>
