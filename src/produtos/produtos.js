@@ -27,7 +27,7 @@ export default function Produtos(props) {
   const [periodosOptions,] = useLocalStorage("periodos",[])
 
 
-  const tamColOptions = [2,3,4]
+  const tamColOptions = [2,3,4,6,12]
   const orderByOptions = ["produto","estoque","desconto"]
 
   const onClick = () => {
@@ -68,7 +68,7 @@ export default function Produtos(props) {
   }, [produtos,classColuna,first,rows,isBarCode])
 
   useEffect(() => {
-    setclassColuna("p-col-12 p-md-6 p-lg-"+tamColuna)
+    setclassColuna("p-col-12 p-md-"+tamColuna+" p-lg-"+tamColuna)
   }, [tamColuna])
 
 

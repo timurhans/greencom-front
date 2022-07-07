@@ -79,6 +79,8 @@ function TableProds(props) {
     const [produto, ] = useState(props.produto)
     const [periodo, setPeriodo] = useState(definePeriodo(props.isBarcode))
     const [pedido, setPedido] = useState({})
+    const [pedidoTotal, setPedidoTotal] = useState(0)
+    const [changePedidoTotal, setChangePedidoTotal] = useState({"change":0,"anterior":0,"novo":0})
     const [linhasDados, setLinhasDados] = useState(<div></div>)
     const [token,setToken] = useLocalStorage("token",null)
     const [clienteId, ] = useLocalStorage("clienteId",null)
@@ -92,6 +94,7 @@ function TableProds(props) {
       
     
       useEffect(() => {
+        let total = 0
         let order = {}
         for (var index in dadosPeriodo){
             let item = dadosPeriodo[index]
@@ -100,16 +103,24 @@ function TableProds(props) {
             order[cor] = qtds
         }
         setPedido(order)
-    
+        setPedidoTotal(0)
       }, [dadosPeriodo])
 
       useEffect(() => {
+        setPedidoTotal(pedidoTotal+changePedidoTotal["change"])
+      }, [changePedidoTotal])
+
+      useEffect(() => {
         if (periodo !== ''){
-            let tams = dadosPeriodo.map((val) => <LinhaDados dados={val} pedido={pedido} setPedido={setPedido}></LinhaDados>)
+            let tams = dadosPeriodo.map((val) => <LinhaDados dados={val} pedido={pedido}  setPedido={setPedido} setChangePedidoTotal={setChangePedidoTotal}></LinhaDados>)
             setLinhasDados(tams)
         }
       }, [pedido,periodo])    
-    
+ 
+        
+
+
+
     const renderTamanhosGrid = (props) => {
         let prods_tams = JSON.parse(props.produto.produto__tamanhos)
         let tams = prods_tams.map((val) => <div className="p-col-1">{val}</div>)
@@ -168,6 +179,7 @@ function TableProds(props) {
             <Dropdown placeholder="Selecione Período" id="dropdown" value={periodo} options={JSON.parse(props.produto.produto__periodos)}
             onChange={(e) => setPeriodo(e.value)}
             />
+            <Chip label={"Qtd Total Produto : "+pedidoTotal} />
             <div className="p-grid">
                 <div className="p-col">TIPO</div>
                 <div className="p-col">COR</div>
@@ -190,12 +202,19 @@ function TableProds(props) {
 function LinhaDados(props){
 
     const handleChange = (valor,props,ordem) => {
+
         if(valor == null){
             valor = 0
         }
+        props.setChangePedidoTotal(0)
         let ped_prov = props.pedido
+        let qtd_anterior = ped_prov[props.dados.cor][ordem]
         ped_prov[props.dados.cor][ordem] = valor
         props.setPedido(ped_prov)
+        console.log('change')
+        console.log(valor-qtd_anterior)
+        props.setChangePedidoTotal({"change":valor-qtd_anterior,"anterior":qtd_anterior,"novo":valor})
+        //props.setPedidoTotal(0)
     }
 
     const renderButtons = (props) => {
@@ -203,13 +222,9 @@ function LinhaDados(props){
         if(Object.keys(props.pedido).length === 0){
             return elems.map((val) => val)
         }
-
-        console.log(props)
         for (var idx in props.dados.qtds){
 
             let i = idx
-
-            
 
             if (props.dados.liberacao){
                 elems.push(
