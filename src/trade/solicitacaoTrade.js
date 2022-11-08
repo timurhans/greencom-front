@@ -144,7 +144,7 @@ const SolicitacaoTrade = () => {
             <div className="p-col-12">
                 <h4>Cliente</h4>
                 <Dropdown placeholder="Selecione Cliente" id="dropdown" value={cliente} options={clientes}
-                    onChange={(e) => setCliente(e.value) } optionLabel="nome"/>
+                    onChange={(e) => setCliente(e.value) } optionLabel="razao_social"/>
             </div>
             <div className="p-col-6">
                 <h4 >Material: {materialEscolhido.descricao}</h4>
