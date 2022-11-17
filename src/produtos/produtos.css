@@ -1,0 +1,13 @@
+.Filtros{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    gap: 1rem;
+    font-size: smaller;
+    padding: .5em;
+  }
+@media (max-width: 960px) {
+    .last{
+        display: none;
+    }
+}

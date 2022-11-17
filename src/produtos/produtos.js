@@ -7,6 +7,7 @@ import { Paginator } from "primereact/paginator";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import "./produtos.css";
 
 export default function Produtos(props) {
   const [listItems, setListItems] = useState(<div></div>);
@@ -82,15 +83,7 @@ export default function Produtos(props) {
 
   return (
     <>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-around",
-            gap: '1rem',
-            fontSize: 'smaller',
-            padding: '.5em'
-          }}
+        <div className="Filtros"
         >
             <div>
               <h3>Colecao</h3>
@@ -119,7 +112,7 @@ export default function Produtos(props) {
                 onChange={(e) => setOrderBy(e.value)}
               />
             </div>
-            <div>
+            <div className="last">
               <h3>Tamanho</h3>
               <Dropdown
                 id="dropdown"

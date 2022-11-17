@@ -99,7 +99,10 @@ export function MyMenu(props) {
   //Mostra lateral do menu apenas para usuario logado
   const button = (
     <div className="btnMenu" onClick={() => setVisibleRight(true)}>
-      <Image src="menu.svg"/>
+      <Image 
+      src="https://cdn-icons-png.flaticon.com/512/55/55003.png"
+      width={35} height={30}
+      />
     </div>
   );
   let end = <a href="/login">Login</a>;
