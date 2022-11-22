@@ -105,7 +105,7 @@ export function MyMenu(props) {
       />
     </div>
   );
-  let end = <a href="/login">Login</a>;
+  let end = <a href="/login" style={{textDecoration: 'none'}}><Button>Login</Button></a>;
   if (props.loggedIn) {
     end = (
       <div className="endMenu">

@@ -33,3 +33,6 @@ code {
 .p-slidemenu-wrapper{
   height: 100% !important;
 }
+.p-card{
+  box-shadow: none !important;
+}

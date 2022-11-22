@@ -68,6 +68,7 @@ export default function Produtos(props) {
             produto={val}
             isBarCode={isBarCode}
             key={index}
+            periodo={periodo}
             searchInput={props.searchInput}
           ></CardProduto>
         </div>
