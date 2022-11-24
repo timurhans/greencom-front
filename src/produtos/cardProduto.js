@@ -27,6 +27,7 @@ export default function CardProduto(props) {
   const onHide = () => {
     setDisplayModal(false);
   };
+  let condicao;
   let desconto;
   if (props.produto.produto__desconto > 0) {
     desconto =
@@ -44,7 +45,18 @@ export default function CardProduto(props) {
     </div>
   );
   return (
-    <div className="p-shadow-2 p-m-2"  style={{padding: '.25rem', fontSize: 'smaller', display: 'flex', width: '100%', flexDirection: 'column', gap: 5, border: 'none'}}>
+    <div
+      className="p-shadow-2 p-m-2"
+      style={{
+        padding: ".25rem",
+        fontSize: "smaller",
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+        gap: 5,
+        border: "none",
+      }}
+    >
       <Card header={header}>
         <img
           top
@@ -53,7 +65,17 @@ export default function CardProduto(props) {
           alt="Sem Imagem"
         />
         <div className="p-grid">
-          <div className="p-field p-col-12 p-md-3" style={{padding: '.25rem', fontSize: 'smaller', display: 'flex', width: '100%', flexDirection: 'column', gap: 5}}>
+          <div
+            className="p-field p-col-12 p-md-3"
+            style={{
+              padding: ".25rem",
+              fontSize: "smaller",
+              display: "flex",
+              width: "100%",
+              flexDirection: "column",
+              gap: 5,
+            }}
+          >
             <Button
               label="Detalhes"
               icon="pi pi-external-link"
@@ -61,7 +83,7 @@ export default function CardProduto(props) {
                 onClick();
                 console.log(props.periodo);
               }}
-              style={{width: '75%', margin: '6px 0 6px 0'}}
+              style={{ width: "75%" }}
             />
             <Dialog
               header={props.produto.produto__produto}
@@ -90,36 +112,67 @@ export default function CardProduto(props) {
                 </div>
               </div>
             </Dialog>
-            {!(props.produto.dados_periodo == undefined) ?<div>
-                {
-                props.produto.dados_periodo.map((e, key) => {
-                  if (count <= 1) {
-                  count++;
-                  return (
-                      <div key={key}>
-                        <div><b>{e.desc_cor}</b></div>
-                        <div style={{padding: 0, margin: 0, display: 'flex', gap: '.75rem', textAlign: 'center'}}>
-                        {e.qtds.map( (qtd, count) => {
-                          let tam = ['PP','P','M','G','GG']
-                          count++
-                          return (
-                            
-                              <div>
-                              <p>
-                              {tam[count - 1]}
-                            </p>
-                            <p>
-                                {qtd}
-                              </p>
-                              </div>
-                          )
-                        })}
+            {!(props.produto.dados_periodo == undefined) ? (
+              <div>
+                {props.produto.dados_periodo.map((e, key) => {
+                  let tamanhos = JSON.parse(props.produto.produto__tamanhos);
+                  condicao = props.produto.dados_periodo.map((a) =>
+                    a.qtds.reduce(function (soma, i) {
+                      return soma + i;
+                    })
+                  );
+                  console.log(condicao);
+
+                  if (count <= 0) {
+                    if (
+                      condicao.reduce(function (soma, i) {
+                        return soma + i;
+                      }) > 0
+                    ) {
+                      count++;
+                      return (
+                        <div key={key}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                              marginBottom: ".5rem",
+                            }}
+                          >
+                            <strong>Disponível</strong>
+                          </div>
+                          <div
+                            style={{
+                              padding: 0,
+                              margin: 0,
+                              display: "flex",
+                              gap: ".75rem",
+                              textAlign: "center",
+                            }}
+                          >
+                            {tamanhos.map((tam, index) => {
+                              return (
+                                <div>
+                                  <span>{tam}</span>
+                                  <p>
+                                    {props.produto.dados_periodo.reduce(
+                                      (accumulator, currentValue) =>
+                                        accumulator + currentValue.qtds[index],
+                                      0
+                                    )}
+                                  </p>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    );
+                      );
+                    }
                   }
                 })}
-              </div>: null}
+              </div>
+            ) : null}
           </div>
         </div>
       </Card>
@@ -134,7 +187,11 @@ function definePeriodo(isBarcode) {
     return "";
   }
 }
-
+const renderTamanhosGrid = (props) => {
+  let prods_tams = JSON.parse(props.produto.produto__tamanhos);
+  let tams = prods_tams.map((val) => <div className="p-col-1">{val}</div>);
+  return tams;
+};
 function TableProds(props) {
   const [produto] = useState(props.produto);
   const [periodo, setPeriodo] = useState(props.periodo);
@@ -177,6 +234,7 @@ function TableProds(props) {
         <LinhaDados
           dados={val}
           pedido={pedido}
+          produto={props.produto}
           setPedido={setPedido}
           setChangePedidoTotal={setChangePedidoTotal}
         ></LinhaDados>
@@ -257,12 +315,10 @@ function TableProds(props) {
         options={JSON.parse(props.produto.produto__periodos)}
         onChange={(e) => setPeriodo(e.value)}
       />
-      <Chip label={"Qtd Total Produto : " + pedidoTotal} />
-      <div className="p-grid">
-        <div className="p-col">TIPO</div>
-        <div className="p-col">COR</div>
-        {renderTamanhosGrid(props)}
-      </div>
+      <Chip
+        style={{ marginLeft: 6 }}
+        label={"Qtd Total Produto : " + pedidoTotal}
+      />
       {linhasDados}
       <Button
         label="Observação"
@@ -306,6 +362,18 @@ function LinhaDados(props) {
       novo: valor,
     });
     //props.setPedidoTotal(0)
+  };
+  const renderTamanhosGrid = (props) => {
+    let prods_tams = JSON.parse(props.produto.produto__tamanhos);
+    let tams = prods_tams.map((val) => (
+      <div
+        className="p-col-1"
+        style={{ fontSize: 12, marginBottom: "-.75rem", marginLeft: ".25rem" }}
+      >
+        {val}
+      </div>
+    ));
+    return tams;
   };
 
   const renderButtons = (props) => {
@@ -365,12 +433,27 @@ function LinhaDados(props) {
   };
 
   return (
-    <div className="p-grid">
-      <div className="p-col">{props.dados.desc_liberacao}</div>
-      <div className="p-col">
-        {props.dados.cor + " - " + props.dados.desc_cor}
+    <div
+      style={{ display: "flex", flexDirection: "column", marginTop: "1rem" }}
+    >
+      <div>
+        <div>
+          <b>{props.dados.cor + " - " + props.dados.desc_cor}</b>
+        </div>
+        <div>
+          <p style={{ fontSize: 12, marginBottom: "-.1rem" }}>
+            {props.dados.desc_liberacao}
+          </p>
+        </div>
       </div>
-      {renderButtons(props)}
+      <div>
+        <div style={{ display: "flex", gap: ".25rem" }}>
+          {renderTamanhosGrid(props)}
+        </div>
+        <div style={{ display: "flex", gap: ".25rem" }}>
+          {renderButtons(props)}
+        </div>
+      </div>
     </div>
   );
 }
