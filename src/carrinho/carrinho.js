@@ -3,6 +3,7 @@ import { useCartSearch,useLocalStorage } from '../requests/greenHooks.js'
 import 'primeflex/primeflex.css';
 import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card';
+import './cardCarrinho.css'
 // import CardCarrinho from './cardCarrinho.js'
 import CardCarrinho from './cardCarrinhoNovo.js'
 import { Button } from 'primereact/button';
@@ -118,10 +119,11 @@ export default function Carrinho() {
   return (
     <>
     <p>{emptyMessage}</p>
-    
-    <Chip label={"Cliente: "+razaoSocial} />
-    <Chip label={"Quantidade Total: "+qtdTotal} />
-    <Chip label={"Valor Total: "+formatMoney(valorTotal)} />
+    <div className="chipGroup">
+    <div className="chip"><p>{"Cliente: "+razaoSocial}</p></div>
+    <div className="chip"><p>{"Quantidade Total: "+qtdTotal}</p></div>
+    <div className="chip"><p>{"Valor Total: "+formatMoney(valorTotal)}</p></div>
+    </div>
     <Button label="Salvar" onClick={() => setDisplayModal(true)} className="p-button-rounded p-mr-2" />
     <Dialog header="Observacoes" visible={displayModal} onHide={()=>setDisplayModal(false)}>     
       <div>
@@ -152,7 +154,9 @@ function CardPeriodo(props){
     </div>)
 
   return (
-    <Card title={props.periodoAtual}>
+    <Card>
+      <hr />
+      <h2>{props.periodoAtual}</h2>
       <p>{"Quantidade Periodo: "+props.qtd_periodo + " | Valor Periodo: "+ formatMoney(props.valor_periodo)}</p>
     <div className="p-grid">
       {listItemsProv}

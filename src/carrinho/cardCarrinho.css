@@ -1,0 +1,22 @@
+.chip{
+    display: flex;
+    width: 100%;
+  }
+  .chip p{
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(230, 230, 230);
+  background-color: rgb(49, 49, 49);
+  border-radius: 16px;
+  font-size: medium;
+}
+.chipGroup{
+    width: 40%;
+    display: flex;
+    
+}
+.btns{
+    gap:.5rem
+}

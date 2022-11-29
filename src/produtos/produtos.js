@@ -19,7 +19,7 @@ export default function Produtos(props) {
   const [periodo, setPeriodo] = useLocalStorage("periodo", "Todos");
   const [orderBy, setOrderBy] = useLocalStorage("orderBy", "produto");
   const [clienteId] = useLocalStorage("clienteId", null);
-  const [tamColuna, setTamColuna] = useLocalStorage("tamColuna", 2);
+  const [tamColuna, setTamColuna] = useLocalStorage("tamColuna", 3);
   const [classColuna, setclassColuna] = useState(
     "p-col-12 p-md-6 p-lg-" + tamColuna
   );
@@ -83,7 +83,7 @@ export default function Produtos(props) {
   }, [tamColuna]);
 
   return (
-    <>
+    <div className="main">
         <div className="Filtros"
         >
             <div>
@@ -131,6 +131,6 @@ export default function Produtos(props) {
         rowsPerPageOptions={[12, 24, 36]}
         onPageChange={handlePageChange}
       ></Paginator>
-    </>
+    </div>
   );
 }

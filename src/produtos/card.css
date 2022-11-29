@@ -1,0 +1,71 @@
+.card {
+  font-family: "Poppins", sans-serif !important;
+  font-size: smaller;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: none;
+}
+.header {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: .25rem;
+  margin: 0.5rem;
+  color: rgb(50, 50, 50);
+  font-size: smaller;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+#p1 {
+  font-weight: 800;
+  text-align: start;
+  color: rgb(50, 50, 50);
+  font-size: small;
+}
+.cardIn {
+    display: flex;
+    font-size: smaller;
+  color: rgb(50, 50, 50);
+}
+p {
+  font-size: 0.75rem;
+  color: rgb(88, 88, 88);
+}
+.price{
+    display: flex;
+    width: 100%;
+  }
+  .price p{
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(230, 230, 230);
+  background-color: rgb(49, 49, 49);
+  border-radius: 16px;
+  font-size: medium;
+  height: 100%;
+}
+.img{
+  cursor: pointer;
+  transition: .2s all;
+  /* transform: translate(-50%, -50%); */
+}
+.img:hover{
+  transform: scale(1.04);
+}
+.disponivel{
+    padding: 0 .5rem 0 .5rem;
+    margin: 0;
+    display: grid;
+    gap: .5rem;
+    width: 100%;
+}
+.table{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

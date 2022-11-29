@@ -88,7 +88,7 @@ export function MyMenu(props) {
   };
 
   const start = (
-    <a href="/">
+    <a href="/" >
       <img
         alt="logo"
         src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png"

@@ -1,46 +1,47 @@
-.menu{
-    display: flex;
-    justify-content: space-between;
-    width: 100vw;
+.menu {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: .85rem !important;
 }
-.menuMobile{
-    display: none;
-    width: 100vw;
+.menuMobile {
+  display: none;
+  width: 100vw;
 }
-.btnMenu{
-    cursor: pointer;
+.btnMenu {
+  cursor: pointer;
 }
-.endMenu{
-    display: flex;
-    gap: .5rem;
+.endMenu {
+  display: flex;
+  gap: 0.5rem;
 }
-.search{
-    display: flex;
-    gap: .5rem;
+.search {
+  display: flex;
+  gap: 0.5rem;
 }
-.btns{
-    display: flex;
-    gap: .5rem;
+.btns {
+  display: flex;
+  gap: 0.5rem;
 }
 @media (max-width: 960px) {
-    .menu{
-        display: none;
-    }
-    .menuMobile{
-        padding: .25rem;
-        display: flex;
-        justify-content: space-between;
-    }
-    .endMenu{
-        display: grid;
-        gap: .5rem;
-    }
-    .search{
-        display: flex;
-        gap: .25rem;
-    }
-    .btns{
-        display: flex;
-        gap: 1rem;
-    }
+  .menu {
+    display: none;
+  }
+  .menuMobile {
+    padding: 0.25rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .endMenu {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .search {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .btns {
+    display: flex;
+    gap: 1rem;
+  }
 }

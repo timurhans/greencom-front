@@ -12,6 +12,7 @@ import { api_address } from "../proxy/proxy.js";
 import { InputTextarea } from "primereact/inputtextarea";
 import { formatMoney } from "../utils/utils.js";
 import { Chip } from "primereact/chip";
+import "./card.css";
 
 export default function CardProduto(props) {
   let count = 0;
@@ -37,143 +38,102 @@ export default function CardProduto(props) {
   } else {
     desconto = "";
   }
-  const header = (
-    <div>
-      <h4>{props.produto.produto__descricao}</h4>
-      <p>{props.produto.produto__produto}</p>
-      <Chip label={formatMoney(props.produto.preco) + desconto} />
-    </div>
-  );
   return (
-    <div
-      className="p-shadow-2 p-m-2"
-      style={{
-        padding: ".25rem",
-        fontSize: "smaller",
-        display: "flex",
-        width: "100%",
-        flexDirection: "column",
-        gap: 5,
-        border: "none",
-      }}
-    >
-      <Card header={header}>
+    <div className="p-shadow-2 p-m-2">
+      <Card className="card">
         <img
           top
           width="100%"
           src={props.produto.produto__url_imagem}
+          className="img"
           alt="Sem Imagem"
+          onClick={() => {
+            onClick();
+          }}
         />
-        <div className="p-grid">
-          <div
-            className="p-field p-col-12 p-md-3"
-            style={{
-              padding: ".25rem",
-              fontSize: "smaller",
-              display: "flex",
-              width: "100%",
-              flexDirection: "column",
-              gap: 5,
-            }}
-          >
-            <Button
-              label="Detalhes"
-              icon="pi pi-external-link"
-              onClick={() => {
-                onClick();
-                console.log(props.periodo);
-              }}
-              style={{ width: "75%" }}
-            />
-            <Dialog
-              header={props.produto.produto__produto}
-              maximizable
-              visible={displayModal}
-              style={{ width: "75vw" }}
-              onHide={() => onHide()}
-            >
-              <div className="p-grid">
-                <div className="p-col">
-                  <img
-                    top
-                    width="100%"
-                    src={props.produto.produto__url_imagem}
-                    alt="Sem Imagem"
-                  />
-                </div>
-                <div className="p-col-fixed" style={{ width: "500px" }}>
-                  <TableProds
-                    isBarcode={props.isBarCode}
-                    searchInput={props.searchInput}
-                    onSave={onHide}
-                    produto={props.produto}
-                    periodo={props.periodo}
-                  ></TableProds>
-                </div>
-              </div>
-            </Dialog>
-            {!(props.produto.dados_periodo == undefined) ? (
-              <div>
-                {props.produto.dados_periodo.map((e, key) => {
-                  let tamanhos = JSON.parse(props.produto.produto__tamanhos);
-                  condicao = props.produto.dados_periodo.map((a) =>
-                    a.qtds.reduce(function (soma, i) {
-                      return soma + i;
-                    })
-                  );
-                  console.log(condicao);
-
-                  if (count <= 0) {
-                    if (
-                      condicao.reduce(function (soma, i) {
-                        return soma + i;
-                      }) > 0
-                    ) {
-                      count++;
-                      return (
-                        <div key={key}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              marginBottom: ".5rem",
-                            }}
-                          >
-                            <strong>Disponível</strong>
-                          </div>
-                          <div
-                            style={{
-                              padding: 0,
-                              margin: 0,
-                              display: "flex",
-                              gap: ".75rem",
-                              textAlign: "center",
-                            }}
-                          >
-                            {tamanhos.map((tam, index) => {
-                              return (
-                                <div>
-                                  <span>{tam}</span>
-                                  <p>
-                                    {props.produto.dados_periodo.reduce(
-                                      (accumulator, currentValue) =>
-                                        accumulator + currentValue.qtds[index],
-                                      0
-                                    )}
-                                  </p>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    }
-                  }
-                })}
-              </div>
-            ) : null}
+        <div className="header">
+          <div>
+            <p id="p1">{props.produto.produto__descricao}</p>
+            <p>{props.produto.produto__produto}</p>
           </div>
+          <div className="price">
+            <p>{formatMoney(props.produto.preco) + desconto}</p>
+          </div>
+        </div>
+        <div className="cardIn">
+          <Dialog
+            header={props.produto.produto__produto}
+            maximizable
+            visible={displayModal}
+            style={{ width: "75vw" }}
+            onHide={() => onHide()}
+          >
+            <div className="p-grid">
+              <div className="p-col">
+                <img
+                  top
+                  width="100%"
+                  src={props.produto.produto__url_imagem}
+                  alt="Sem Imagem"
+                />
+              </div>
+              <div className="p-col-fixed" style={{ width: "500px" }}>
+                <TableProds
+                  isBarcode={props.isBarCode}
+                  searchInput={props.searchInput}
+                  onSave={onHide}
+                  produto={props.produto}
+                  periodo={props.periodo}
+                ></TableProds>
+              </div>
+            </div>
+          </Dialog>
+          {!(props.produto.dados_periodo == undefined) ? (
+            <div style={{ width: "100%" }}>
+              {props.produto.dados_periodo.map((e, key) => {
+                let tamanhos = JSON.parse(props.produto.produto__tamanhos);
+                condicao = props.produto.dados_periodo.map((a) =>
+                  a.qtds.reduce(function (soma, i) {
+                    return soma + i;
+                  })
+                );
+                console.log(condicao);
+
+                if (count <= 0) {
+                  if (
+                    condicao.reduce(function (soma, i) {
+                      return soma + i;
+                    }) > 0
+                  ) {
+                    count++;
+                    return (
+                      <div key={key} className="disponivel">
+                        <div>
+                          <strong>Disponível</strong>
+                        </div>
+                        <div className="table">
+                          {tamanhos.map((tam, index) => {
+                            return (
+                              <div>
+                                <span>{tam}</span>
+                                <p>
+                                  {props.produto.dados_periodo.reduce(
+                                    (accumulator, currentValue) =>
+                                      accumulator + currentValue.qtds[index],
+                                    0
+                                  )}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+                }
+              })}
+            </div>
+          ) : null}
         </div>
       </Card>
     </div>
@@ -308,22 +268,30 @@ function TableProds(props) {
   return (
     <div>
       <Messages ref={message} />
-      <Dropdown
-        placeholder="Selecione Período"
-        id="dropdown"
-        value={periodo}
-        options={JSON.parse(props.produto.produto__periodos)}
-        onChange={(e) => setPeriodo(e.value)}
-      />
-      <Chip
-        style={{ marginLeft: 6 }}
-        label={"Qtd Total Produto : " + pedidoTotal}
-      />
+      <div className="header">
+        <Dropdown
+          placeholder="Selecione Período"
+          id="dropdown"
+          style={{marginTop:'.75rem'}}
+          value={periodo}
+          options={JSON.parse(props.produto.produto__periodos)}
+          onChange={(e) => setPeriodo(e.value)}
+        />
+        <div className="price">
+          <p>{"Quantidade Total de Produtos : " + pedidoTotal}</p>
+        </div>
+      </div>
       {linhasDados}
       <Button
+        style={{ marginTop: "1.5rem" }}
         label="Observação"
         onClick={() => setDisplayModalObs(true)}
         className="p-mr-2"
+      />
+      <Button
+        style={{ marginTop: "1.5rem" }}
+        label="Adicionar"
+        onClick={handleSubmit}
       />
       <Dialog
         header="Observação Item"
@@ -339,7 +307,6 @@ function TableProds(props) {
           />
         </div>
       </Dialog>
-      <Button label="Adicionar" onClick={handleSubmit} />
     </div>
   );
 }

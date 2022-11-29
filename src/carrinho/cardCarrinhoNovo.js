@@ -14,6 +14,7 @@ import { api_address } from "../proxy/proxy.js";
 import { InputTextarea } from "primereact/inputtextarea";
 import { formatMoney } from "../utils/utils.js";
 import { Chip } from "primereact/chip";
+import './cardCarrinho.css'
 
 export default function CardCarrinho(props) {
   const [displayModal, setDisplayModal] = useState(false);
@@ -109,7 +110,7 @@ export default function CardCarrinho(props) {
           }
         />
       ) : (
-        <Chip label={"Preço: " + formatMoney(props.produto.preco)} />
+        <div className="chip"><p>{"Preço: " + formatMoney(props.produto.preco)}</p></div>
       )}
     </div>
   );
@@ -119,7 +120,7 @@ export default function CardCarrinho(props) {
   
   return (
     <div className="p-shadow-2 p-m-2">
-      <Card header={header}>
+      <Card>
         <Messages ref={message} />
         <img
           top
@@ -127,7 +128,8 @@ export default function CardCarrinho(props) {
           src={props.produto.produto__url_imagem}
           alt="Sem Imagem"
         />
-        <div className="p-grid">
+        <h4>{header}</h4>
+        <div className="p-grid btns">
           <Button label="Remover" onClick={() => confirma_exclusao()} />
           <Panel
             header="Alterar"
