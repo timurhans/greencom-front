@@ -18,6 +18,11 @@
 .search {
   display: flex;
   gap: 0.5rem;
+  transition: 0.2s;
+}
+.searchvs{
+  display: none;
+  transition: 0.2s;
 }
 .btns {
   display: flex;
@@ -25,10 +30,11 @@
 }
 @media (max-width: 960px) {
   .menu {
-    display: none;
+    display: none !important;
   }
   .menuMobile {
-    padding: 0.25rem;
+    padding: 0.5rem !important;
+    padding-right: 1rem !important;
     display: flex;
     justify-content: space-between;
   }

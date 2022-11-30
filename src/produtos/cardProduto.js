@@ -31,16 +31,23 @@ export default function CardProduto(props) {
   let condicao;
   let desconto;
   if (props.produto.produto__desconto > 0) {
-    desconto =
-      " - " +
-      parseFloat(props.produto.produto__desconto * 100).toFixed() +
-      "% OFF";
+    desconto =<div style={{display: 'flex', gap: 8}}>
+    <s>{formatMoney(props.produto.preco)}</s>
+      <span>{formatMoney(props.produto.preco - (props.produto.produto__desconto * props.produto.preco))}</span>
+    </div>
   } else {
     desconto = "";
   }
   return (
     <div className="p-shadow-2 p-m-2">
-      <Card className="card">
+      <Card className="card">{props.produto.produto__desconto > 0 && 
+        <div className="tag"><p>
+          {
+            parseFloat(props.produto.produto__desconto * 100).toFixed() + '%'
+          }
+          </p>
+        </div>
+        }
         <img
           top
           width="100%"
@@ -56,8 +63,12 @@ export default function CardProduto(props) {
             <p id="p1">{props.produto.produto__descricao}</p>
             <p>{props.produto.produto__produto}</p>
           </div>
-          <div className="price">
-            <p>{formatMoney(props.produto.preco) + desconto}</p>
+          <div className="chip">
+            {props.produto.produto__desconto > 0 ? 
+            <p id="desconto">{desconto}</p>
+            :
+            <p>{formatMoney(props.produto.preco)}</p>
+          }
           </div>
         </div>
         <div className="cardIn">
@@ -97,7 +108,6 @@ export default function CardProduto(props) {
                     return soma + i;
                   })
                 );
-                console.log(condicao);
 
                 if (count <= 0) {
                   if (
@@ -272,13 +282,13 @@ function TableProds(props) {
         <Dropdown
           placeholder="Selecione Período"
           id="dropdown"
-          style={{marginTop:'.75rem'}}
           value={periodo}
           options={JSON.parse(props.produto.produto__periodos)}
           onChange={(e) => setPeriodo(e.value)}
         />
-        <div className="price">
-          <p>{"Quantidade Total de Produtos : " + pedidoTotal}</p>
+        <div className="chip">
+        <span id="qtd">Quantidade Total:</span>
+        <p id="quantidade">{pedidoTotal}</p>
         </div>
       </div>
       {linhasDados}

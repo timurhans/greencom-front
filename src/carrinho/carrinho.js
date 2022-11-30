@@ -4,6 +4,7 @@ import 'primeflex/primeflex.css';
 import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card';
 import './cardCarrinho.css'
+import './carrinho.css'
 // import CardCarrinho from './cardCarrinho.js'
 import CardCarrinho from './cardCarrinhoNovo.js'
 import { Button } from 'primereact/button';
@@ -117,7 +118,7 @@ export default function Carrinho() {
   }
 
   return (
-    <>
+    <div className="carrinho">
     <p>{emptyMessage}</p>
     <div className="chipGroup">
     <div className="chip"><p>{"Cliente: "+razaoSocial}</p></div>
@@ -141,7 +142,7 @@ export default function Carrinho() {
       
     </Dialog>
     <div className="p-grid">{listItems}</div>
-    </>
+    </div>
   )
 }
 

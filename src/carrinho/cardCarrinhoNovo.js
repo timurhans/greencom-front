@@ -14,7 +14,7 @@ import { api_address } from "../proxy/proxy.js";
 import { InputTextarea } from "primereact/inputtextarea";
 import { formatMoney } from "../utils/utils.js";
 import { Chip } from "primereact/chip";
-import './cardCarrinho.css'
+import "./cardCarrinho.css";
 
 export default function CardCarrinho(props) {
   const [displayModal, setDisplayModal] = useState(false);
@@ -101,26 +101,34 @@ export default function CardCarrinho(props) {
           formatMoney(props.produto.valor_item)}
       </p>
       {props.produto.desconto > 0 ? (
-        <Chip
-          label={
-            "Preço: De " +
-            formatMoney(preco_normal) +
-            " por R$" +
-            formatMoney(preco_desc)
-          }
-        />
+        <div className="chip">
+          <p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <s>{formatMoney(preco_normal)}</s>
+              <span>
+                {formatMoney(preco_desc)}
+              </span>
+            </div>
+          </p>
+        </div>
       ) : (
-        <div className="chip"><p>{"Preço: " + formatMoney(props.produto.preco)}</p></div>
+        <div className="chip">
+          <p>{"Preço: " + formatMoney(props.produto.preco)}</p>
+        </div>
       )}
     </div>
   );
-  const a = JSON.parse(props.produto.qtds) 
-  
-    console.log(props.produto) ;
-  
+  const a = JSON.parse(props.produto.qtds);
+
+  console.log(props.produto);
+
   return (
     <div className="p-shadow-2 p-m-2">
+
       <Card>
+        {props.produto.desconto > 0 && <><div className="tag">
+          <p>{((props.produto.desconto * 100)/preco_normal).toString().substring(0,2) +'%'}</p>
+          </div></>}
         <Messages ref={message} />
         <img
           top

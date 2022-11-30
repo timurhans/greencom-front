@@ -68,6 +68,7 @@ export function MyMenu(props) {
   const [itemMob,] = useLocalStorage("categoriasMobile",[])
   const [visibleRight, setVisibleRight] = useState(false);
   const [query, setQuery] = useState("");
+  const [search, setSearch] = useState('search');
   const [tipoConta] = useLocalStorage("tipoConta", []);
 
   const handleSearch = (e) => {
@@ -91,7 +92,7 @@ export function MyMenu(props) {
     <a href="/" >
       <img
         alt="logo"
-        src="https://ondasstr092020.blob.core.windows.net/modelo/logo.png"
+        src="https://www.greenish.com.br/arquivos/logo-greenish.png?v=638040487547770000"
         className="p-mr-2"
       />
     </a>
@@ -109,19 +110,26 @@ export function MyMenu(props) {
   if (props.loggedIn) {
     end = (
       <div className="endMenu">
-        <div className="search">
+        <div className={search}>
           <InputText
             ref={props.searchInput}
             onChange={handleChangeSearch}
             placeholder="Buscar"
             type="text"
           />
+        </div>
           <Button
-            onClick={handleSearch}
+            onClick={(e) => {handleSearch(e)
+              if (search === 'search') {
+                setSearch('searchvs')
+              }
+              else{
+                setSearch('search')
+              }
+            }}
             icon="pi pi-search"
             className="p-button-rounded p-button-secondary"
           />
-        </div>
         <div className="btns">
           <Button
             icon="pi pi-shopping-cart"
