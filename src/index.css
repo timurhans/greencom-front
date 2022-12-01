@@ -58,3 +58,6 @@ table{
     width: auto !important;
     table-layout:auto !important;
 }
+.p-button {
+  margin: .25rem !important;
+}
