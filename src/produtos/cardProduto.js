@@ -17,7 +17,7 @@ import "./card.css";
 export default function CardProduto(props) {
   let count = 0;
   const [displayModal, setDisplayModal] = useState(false);
-
+  
   useEffect(() => {
     setDisplayModal(props.isBarCode);
   }, [props.isBarCode]);

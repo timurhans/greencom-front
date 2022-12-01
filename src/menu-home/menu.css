@@ -28,15 +28,25 @@
   display: flex;
   gap: 0.5rem;
 }
+.bars{
+  background: none !important;
+  color: #59714f !important;
+  border: none !important;
+}
+.pi-bars:before {
+  content: "\e91d";
+  font-size: 2rem;
+  font-weight: bold;
+}
 @media (max-width: 960px) {
   .menu {
     display: none !important;
   }
   .menuMobile {
-    padding: 0.5rem !important;
-    padding-right: 1rem !important;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    padding: .5rem !important;
   }
   .endMenu {
     display: grid;

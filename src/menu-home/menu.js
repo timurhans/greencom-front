@@ -54,7 +54,7 @@ const MenuPerfil = () => {
     <>
       <Menu model={items} popup ref={menu} id="popup_menu" />
       <Button
-        icon="pi pi-bars"
+        icon="pi pi-align-justify"
         onClick={(event) => menu.current.toggle(event)}
         aria-controls="popup_menu"
         aria-haspopup
@@ -100,10 +100,9 @@ export function MyMenu(props) {
   //Mostra lateral do menu apenas para usuario logado
   const button = (
     <div className="btnMenu" onClick={() => setVisibleRight(true)}>
-      <Image 
-      src="https://cdn-icons-png.flaticon.com/512/55/55003.png"
-      width={35} height={30}
-      />
+      <Button className="bars"
+        icon="pi pi-bars"
+        />
     </div>
   );
   let end = <a href="/login" style={{textDecoration: 'none'}}><Button>Login</Button></a>;
@@ -117,13 +116,13 @@ export function MyMenu(props) {
             placeholder="Buscar"
             type="text"
           />
-        </div>
           <Button
             onClick={(e) => {handleSearch(e)
             }}
             icon="pi pi-search"
             className="p-button-rounded p-button-secondary"
-          />
+            />
+            </div>
         <div className="btns">
           <Button
             icon="pi pi-shopping-cart"
