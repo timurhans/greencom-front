@@ -163,7 +163,7 @@ const Pedidos = () => {
         <div>
             <Messages ref={message} />
             <Dialog title="Processando" visible={displayModal} onHide={()=>""}><ProgressSpinner /></Dialog>
-            <div className="card">
+            <div>
                 <DataTable value={pedidos}>
                     <Column field="cliente__razao_social" header="Razao Social" filter filterPlaceholder="Buscar"></Column>
                     <Column field="colecao" header="Colecao" filter filterPlaceholder="Buscar"></Column>
@@ -175,7 +175,7 @@ const Pedidos = () => {
                     <Column field="liberado_rep" header="Liberado" body={liberado_template}></Column>
                     <Column field="enviado_fabrica" header="Enviado" body={enviado_template}></Column>
                     <Column field="codigo_erp" header="ID Ondas"></Column>
-                    <Column header="Acoes" body={actionBodyTemplate}></Column>
+                    <Column header="Acoes" body={actionBodyTemplate} className="td"></Column>
                 </DataTable>
             </div>
         </div>

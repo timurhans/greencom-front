@@ -68,7 +68,7 @@ export function MyMenu(props) {
   const [itemMob,] = useLocalStorage("categoriasMobile",[])
   const [visibleRight, setVisibleRight] = useState(false);
   const [query, setQuery] = useState("");
-  const [search, setSearch] = useState('search');
+  const [search, setSearch] = useState('searchvs');
   const [tipoConta] = useLocalStorage("tipoConta", []);
 
   const handleSearch = (e) => {

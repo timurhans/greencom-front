@@ -53,3 +53,8 @@ body::-webkit-scrollbar{
 .p-shadow-2{
   box-shadow: none !important;
 }
+table{
+  border-collapse: none !important;
+    width: auto !important;
+    table-layout:auto !important;
+}
