@@ -58,3 +58,18 @@ table{
     width: auto !important;
     table-layout:auto !important;
 }
+.td{
+  width: 8vw;
+  display: grid;
+  gap: .25rem;
+}
+.bt{
+  width: 95%;
+}
+@media (max-width: 960px) {
+  .td{
+    width: 15vh;
+    display: grid;
+    gap: .25rem;
+  }
+}

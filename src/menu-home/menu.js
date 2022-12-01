@@ -68,7 +68,7 @@ export function MyMenu(props) {
   const [itemMob,] = useLocalStorage("categoriasMobile",[])
   const [visibleRight, setVisibleRight] = useState(false);
   const [query, setQuery] = useState("");
-  const [search, setSearch] = useState('searchvs');
+  const [search, setSearch] = useState('search');
   const [tipoConta] = useLocalStorage("tipoConta", []);
 
   const handleSearch = (e) => {
@@ -120,12 +120,6 @@ export function MyMenu(props) {
         </div>
           <Button
             onClick={(e) => {handleSearch(e)
-              if (search === 'search') {
-                setSearch('searchvs')
-              }
-              else{
-                setSearch('search')
-              }
             }}
             icon="pi pi-search"
             className="p-button-rounded p-button-secondary"

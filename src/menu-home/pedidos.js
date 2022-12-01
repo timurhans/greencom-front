@@ -121,10 +121,10 @@ const Pedidos = () => {
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
-                {rowData.liberado_rep ? <Button label="Visualizar" onClick={() => window.location.href = '/pedido/'+rowData.id} />  : <Button label="Alterar" onClick={() => confirma_alteracao(rowData)} />}
-                {rowData.liberado_rep  ? <></>  : rowData.liberado_cliente && isRep ? <Button label="Processar" onClick={() => processar(rowData)} /> : <></>}
-            </React.Fragment>
+            <div className='td'>
+                {rowData.liberado_rep ? <Button className='bt' label="Visualizar" onClick={() => window.location.href = '/pedido/'+rowData.id} />  : <Button className='bt' label="Alterar" onClick={() => confirma_alteracao(rowData)} />}
+                {rowData.liberado_rep  ? <></>  : rowData.liberado_cliente && isRep ? <Button className='bt' label="Processar" onClick={() => processar(rowData)} /> : <></>}
+            </div>
         );
     }
 
@@ -175,7 +175,7 @@ const Pedidos = () => {
                     <Column field="liberado_rep" header="Liberado" body={liberado_template}></Column>
                     <Column field="enviado_fabrica" header="Enviado" body={enviado_template}></Column>
                     <Column field="codigo_erp" header="ID Ondas"></Column>
-                    <Column header="Acoes" body={actionBodyTemplate} className="td"></Column>
+                    <Column header="Acoes" body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
         </div>
