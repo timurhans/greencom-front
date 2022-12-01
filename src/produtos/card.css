@@ -58,12 +58,15 @@ font-weight: bold;
   display: flex;
   
 }
+.tag{
+  position: absolute;
+  transform: scale(1.05);
+}
 .tag p{
   padding: .65rem .25rem .65rem .25rem;
   color:#62c14b;
   background-color: rgb(37, 37, 37);
   font-size: small;
-  position: absolute;
 }
 #qtd{
   font-size: medium;
@@ -73,8 +76,11 @@ font-weight: bold;
   transition: .2s all;
   /* transform: translate(-50%, -50%); */
 }
-.img:hover{
+/* .img:hover{
   transform: scale(1.04);
+} */
+.img:hover{
+  transform: scale(1.03);
 }
 .disponivel{
     padding: 0 .5rem 0 .5rem;

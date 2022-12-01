@@ -40,7 +40,11 @@ export default function CardProduto(props) {
   }
   return (
     <div className="p-shadow-2 p-m-2">
-      <Card className="card">{props.produto.produto__desconto > 0 && 
+      <Card className="card">
+        <div
+          className="img"
+          >
+        {props.produto.produto__desconto > 0 && 
         <div className="tag"><p>
           {
             parseFloat(props.produto.produto__desconto * 100).toFixed() + '%'
@@ -52,12 +56,13 @@ export default function CardProduto(props) {
           top
           width="100%"
           src={props.produto.produto__url_imagem}
-          className="img"
           alt="Sem Imagem"
           onClick={() => {
             onClick();
           }}
         />
+        </div>
+
         <div className="header">
           <div>
             <p id="p1">{props.produto.produto__descricao}</p>
