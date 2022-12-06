@@ -109,7 +109,7 @@ export function MyMenu(props) {
   if (props.loggedIn) {
     end = (
       <div className="endMenu">
-        <div className={search}>
+        <div>
           <InputText
             ref={props.searchInput}
             onChange={handleChangeSearch}
