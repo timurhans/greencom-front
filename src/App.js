@@ -6,6 +6,7 @@ import Pedidos from './menu-home/pedidos.js'
 import Promocoes from './menu-home/promocoes.js'
 import Conta from './menu-home/conta.js'
 import Produtos from './produtos/produtos.js'
+import ProdutosOnline from './produtos/produtosOnline.js'
 import Carrinho from './carrinho/carrinho.js'
 import Pedido from './pedido/pedido.js'
 import {SolicitacaoTrade} from './trade/solicitacaoTrade.js'
@@ -129,6 +130,7 @@ function App() {
                   </Route>   
                   <Route path="/teste" component={DataTableBasicDemo} />
                   <Route path="/pedido/:idPedido" component={Pedido} />
+                  <Route path="/online" component={ProdutosOnline} />
                   <Route path="/:linha/:categoria/:subcategoria">
                     {loggedIn ? <Produtos searchInput={searchInput} />  :  <Redirect to="/login"/>}
                   </Route>                  
