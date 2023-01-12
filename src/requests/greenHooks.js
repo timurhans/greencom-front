@@ -63,6 +63,30 @@ export function useProductSearch(colecao, periodo, clienteId, orderBy) {
   return { produtos, isBarCode };
 }
 
+export function useProductSearchOnline() {
+  const [produtos, setProdutos] = useState({});
+  const [isBarCode, setIsBarCode] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const values = queryString.parse(window.location.search); //busca get parameters
+    let url = api_address + location.pathname + "/";
+
+    axios({
+      method: "GET",
+      url: url,
+      params: {
+        query: values.query,
+      },
+    }).then((res) => {
+      setProdutos(res.data);
+      console.log(res.data["isBarCode"]);
+      setIsBarCode(res.data["isBarCode"]);
+    });
+  }, [location]);
+  return { produtos, isBarCode };
+}
+
 export default function usePeriodos(produto, periodo, periodo_atual = null) {
   const [dadosPeriodo, setDadosPeriodo] = useState([]);
   const [token, setToken] = useLocalStorage("token", null);
@@ -76,7 +100,7 @@ export default function usePeriodos(produto, periodo, periodo_atual = null) {
       };
       axios({
         method: "GET",
-        headers: { Authorization: "Token " + token },
+        // headers: { Authorization: "Token " + token },
         url: url,
         params: params,
       }).then((res) => {
