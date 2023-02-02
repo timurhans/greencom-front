@@ -24,6 +24,11 @@ export default function Login(props) {
   const [, setColecoes] = useLocalStorage("colecoes", []);
   const [, setPeriodos] = useLocalStorage("periodos", []);
   const [, setTipoConta] = useLocalStorage("tipoConta", []);
+
+  const [colecao, setColecao] = useLocalStorage("colecao", "Todas");
+  const [periodo, setPeriodo] = useLocalStorage("periodo", "Todos");
+  const [orderBy, setOrderBy] = useLocalStorage("orderBy", "produto");
+  
   const message = useRef(null);
 
   useEffect(() => {
@@ -61,6 +66,12 @@ export default function Login(props) {
             action: "login",
             user_type: response.data["tipo_conta"],
           });
+
+          if(!response.data["isRep"]){
+            setPeriodo("Imediato")
+            setOrderBy("estoque")
+          }
+
         });
       })
       .catch(function (err) {
